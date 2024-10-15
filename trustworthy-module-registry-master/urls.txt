@@ -1,0 +1,6 @@
+https://github.com/facebook/react
+https://github.com/twbs/bootstrap
+https://github.com/tensorflow/tensorflow
+https://www.npmjs.com/package/lodash
+https://www.npmjs.com/package/express
+https://www.npmjs.com/package/axios

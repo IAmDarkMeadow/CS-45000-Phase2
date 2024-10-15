@@ -1,0 +1,17 @@
+curl -H "Authorization: Bearer TOKEN \
+     -X POST \
+     -d '{"query": "{ viewer { login } }"}' \
+     https://api.github.com/graphql
+
+curl -H "Authorization: Bearer TOKEN \
+     -H "Content-Type: application/json" \
+     -X POST \
+     -d '{
+          "query": "query GetCommits($repoOwner: String!, $repoName: String!, $commitLimit: Int!) { repository(owner: $repoOwner, name: $repoName) { defaultBranchRef { target { ... on Commit { history(first: $commitLimit) { edges { node { message committedDate author { name email } url } } } } } } } } }",
+          "variables": {
+            "repoOwner": "microsoft",
+            "repoName": "graphrag",
+            "commitLimit": 10
+          }
+        }' \
+     https://api.github.com/graphql

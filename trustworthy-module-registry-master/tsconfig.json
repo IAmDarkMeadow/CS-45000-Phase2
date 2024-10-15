@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+      "target": "es2020",                    // Set the JavaScript version output (Node.js supports ES2020)
+      "module": "commonjs",                  // CommonJS is standard for Node.js
+      "lib": ["es2020"],                     // Include typings for ES2020
+      "outDir": "./dist",                    // Redirect output structure to the directory
+      "rootDir": "./src",                    // Specify the root directory of input files
+      "strict": true,                        // Enable all strict type-checking options
+      "esModuleInterop": true,               // Enables compilation of ES6 modules to conform to CommonJS
+      "skipLibCheck": true,                  // Skip type checking of all declaration files (*.d.ts)
+      "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
+      "resolveJsonModule": true,             // Allow importing .json files
+      "moduleResolution": "node",            // Choose the module resolution strategy for style Node.js
+      "experimentalDecorators": true,        // Enable experimental support for decorators
+      "emitDecoratorMetadata": true,         // Emit design-type metadata for decorated declarations
+      "removeComments": false                // Do not remove comments - useful for source code documentation purposes
+    },
+    "include": [
+      "src/**/*"                             // Include all files in the src folder
+    ],
+    "exclude": [
+      "node_modules",                        // Exclude the node_modules directory
+      "**/*.test.ts"                         // Exclude test files from compilation to the output directory
+    ]
+  }
+  
