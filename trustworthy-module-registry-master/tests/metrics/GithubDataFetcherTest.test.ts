@@ -1,7 +1,7 @@
 import { GitHubDataFetcher } from '../../src/Data_Fetcher/GitHubDataFetcher';
 
 const URL = 'https://github.com/microsoft/graphrag';
-const token = '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'; // Ensure this token has the necessary permissions
+ // Ensure this token has the necessary permissions
 
 describe('GitHubDataFetcher', () => {
     let dataFetcher: GitHubDataFetcher;
