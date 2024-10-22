@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1727668357215" clover="3.2.0">
-  <project timestamp="1727668357215" name="All files">
-    <metrics statements="281" coveredstatements="271" conditionals="131" coveredconditionals="122" methods="56" coveredmethods="56" elements="468" coveredelements="449" complexity="0" loc="281" ncloc="281" packages="3" files="10" classes="10"/>
+<coverage generated="1729301125344" clover="3.2.0">
+  <project timestamp="1729301125344" name="All files">
+    <metrics statements="281" coveredstatements="231" conditionals="131" coveredconditionals="106" methods="56" coveredmethods="44" elements="468" coveredelements="381" complexity="0" loc="281" ncloc="281" packages="3" files="10" classes="10"/>
     <package name="src.Data_Fetcher">
-      <metrics statements="132" coveredstatements="126" conditionals="28" coveredconditionals="26" methods="31" coveredmethods="31"/>
-      <file name="GitHubDataFetcher.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\Data_Fetcher\GitHubDataFetcher.ts">
-        <metrics statements="74" coveredstatements="74" conditionals="17" coveredconditionals="17" methods="20" coveredmethods="20"/>
-        <line num="14" count="7" type="stmt"/>
-        <line num="16" count="13" type="stmt"/>
-        <line num="20" count="13" type="stmt"/>
-        <line num="21" count="13" type="stmt"/>
-        <line num="25" count="43" type="stmt"/>
-        <line num="26" count="43" type="stmt"/>
-        <line num="35" count="42" type="cond" truecount="1" falsecount="0"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="39" count="41" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="47" count="9" type="stmt"/>
-        <line num="71" count="9" type="stmt"/>
-        <line num="72" count="9" type="stmt"/>
-        <line num="74" count="9" type="stmt"/>
-        <line num="75" count="8" type="stmt"/>
-        <line num="77" count="401" type="stmt"/>
-        <line num="83" count="401" type="stmt"/>
-        <line num="85" count="8" type="stmt"/>
-        <line num="93" count="4" type="stmt"/>
-        <line num="121" count="4" type="stmt"/>
-        <line num="122" count="4" type="stmt"/>
-        <line num="124" count="4" type="stmt"/>
-        <line num="126" count="4" type="stmt"/>
-        <line num="127" count="4" type="stmt"/>
-        <line num="129" count="4" type="stmt"/>
-        <line num="130" count="400" type="stmt"/>
-        <line num="131" count="400" type="cond" truecount="1" falsecount="0"/>
-        <line num="132" count="400" type="stmt"/>
-        <line num="133" count="400" type="cond" truecount="2" falsecount="0"/>
-        <line num="137" count="294" type="stmt"/>
-        <line num="139" count="4" type="stmt"/>
-        <line num="143" count="20" type="stmt"/>
-        <line num="149" count="98" type="stmt"/>
-        <line num="150" count="98" type="cond" truecount="2" falsecount="0"/>
-        <line num="151" count="98" type="cond" truecount="2" falsecount="0"/>
-        <line num="152" count="98" type="stmt"/>
-        <line num="158" count="8" type="stmt"/>
-        <line num="184" count="8" type="stmt"/>
-        <line num="185" count="8" type="stmt"/>
-        <line num="187" count="8" type="stmt"/>
-        <line num="188" count="8" type="stmt"/>
-        <line num="189" count="8" type="cond" truecount="2" falsecount="0"/>
-        <line num="190" count="8" type="cond" truecount="2" falsecount="0"/>
-        <line num="192" count="8" type="stmt"/>
-        <line num="204" count="10" type="stmt"/>
-        <line num="231" count="10" type="stmt"/>
-        <line num="232" count="10" type="stmt"/>
-        <line num="234" count="10" type="cond" truecount="5" falsecount="0"/>
-        <line num="242" count="5" type="stmt"/>
-        <line num="243" count="5" type="stmt"/>
-        <line num="281" count="5" type="stmt"/>
-        <line num="282" count="5" type="stmt"/>
-        <line num="284" count="5" type="stmt"/>
-        <line num="285" count="5" type="stmt"/>
-        <line num="286" count="5" type="stmt"/>
-        <line num="287" count="5" type="stmt"/>
-        <line num="288" count="5" type="stmt"/>
-        <line num="289" count="5" type="stmt"/>
-        <line num="290" count="5" type="stmt"/>
-        <line num="291" count="188" type="stmt"/>
-        <line num="294" count="5" type="stmt"/>
-        <line num="296" count="5" type="stmt"/>
-        <line num="308" count="3" type="stmt"/>
-        <line num="320" count="3" type="stmt"/>
-        <line num="321" count="3" type="stmt"/>
-        <line num="323" count="3" type="stmt"/>
-        <line num="327" count="2" type="stmt"/>
-        <line num="328" count="2" type="stmt"/>
-        <line num="337" count="1" type="stmt"/>
-        <line num="346" count="1" type="stmt"/>
-        <line num="347" count="1" type="stmt"/>
-        <line num="352" count="41" type="stmt"/>
-        <line num="353" count="41" type="stmt"/>
+      <metrics statements="132" coveredstatements="86" conditionals="28" coveredconditionals="10" methods="31" coveredmethods="19"/>
+      <file name="GitHubDataFetcher.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\Data_Fetcher\GitHubDataFetcher.ts">
+        <metrics statements="74" coveredstatements="34" conditionals="17" coveredconditionals="1" methods="20" coveredmethods="8"/>
+        <line num="14" count="6" type="stmt"/>
+        <line num="16" count="11" type="stmt"/>
+        <line num="20" count="11" type="stmt"/>
+        <line num="21" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="26" count="11" type="stmt"/>
+        <line num="35" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="36" count="7" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="7" type="stmt"/>
+        <line num="42" count="7" type="stmt"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="71" count="3" type="stmt"/>
+        <line num="72" count="3" type="stmt"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="131" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="133" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="143" count="0" type="stmt"/>
+        <line num="149" count="0" type="stmt"/>
+        <line num="150" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="151" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="158" count="2" type="stmt"/>
+        <line num="184" count="2" type="stmt"/>
+        <line num="185" count="2" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
+        <line num="188" count="0" type="stmt"/>
+        <line num="189" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="190" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="192" count="0" type="stmt"/>
+        <line num="204" count="2" type="stmt"/>
+        <line num="231" count="2" type="stmt"/>
+        <line num="232" count="2" type="stmt"/>
+        <line num="234" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="242" count="2" type="stmt"/>
+        <line num="243" count="2" type="stmt"/>
+        <line num="281" count="2" type="stmt"/>
+        <line num="282" count="2" type="stmt"/>
+        <line num="284" count="0" type="stmt"/>
+        <line num="285" count="0" type="stmt"/>
+        <line num="286" count="0" type="stmt"/>
+        <line num="287" count="0" type="stmt"/>
+        <line num="288" count="0" type="stmt"/>
+        <line num="289" count="0" type="stmt"/>
+        <line num="290" count="0" type="stmt"/>
+        <line num="291" count="0" type="stmt"/>
+        <line num="294" count="0" type="stmt"/>
+        <line num="296" count="0" type="stmt"/>
+        <line num="308" count="0" type="stmt"/>
+        <line num="320" count="0" type="stmt"/>
+        <line num="321" count="0" type="stmt"/>
+        <line num="323" count="0" type="stmt"/>
+        <line num="327" count="0" type="stmt"/>
+        <line num="328" count="0" type="stmt"/>
+        <line num="337" count="0" type="stmt"/>
+        <line num="346" count="0" type="stmt"/>
+        <line num="347" count="0" type="stmt"/>
+        <line num="352" count="11" type="stmt"/>
+        <line num="353" count="11" type="stmt"/>
       </file>
-      <file name="NPMDataFetcher.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\Data_Fetcher\NPMDataFetcher.ts">
+      <file name="NPMDataFetcher.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\Data_Fetcher\NPMDataFetcher.ts">
         <metrics statements="58" coveredstatements="52" conditionals="11" coveredconditionals="9" methods="11" coveredmethods="11"/>
         <line num="4" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
@@ -110,7 +110,7 @@
         <line num="56" count="4" type="stmt"/>
         <line num="57" count="2" type="stmt"/>
         <line num="58" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
+        <line num="61" count="4" type="stmt"/>
         <line num="66" count="2" type="stmt"/>
         <line num="67" count="2" type="stmt"/>
         <line num="68" count="2" type="stmt"/>
@@ -118,17 +118,17 @@
         <line num="73" count="9" type="stmt"/>
         <line num="74" count="2" type="stmt"/>
         <line num="75" count="2" type="stmt"/>
-        <line num="78" count="7" type="stmt"/>
+        <line num="78" count="8" type="stmt"/>
         <line num="83" count="7" type="stmt"/>
         <line num="84" count="7" type="stmt"/>
         <line num="85" count="2" type="stmt"/>
         <line num="86" count="2" type="stmt"/>
-        <line num="89" count="5" type="stmt"/>
+        <line num="89" count="6" type="stmt"/>
         <line num="94" count="3" type="stmt"/>
         <line num="95" count="3" type="stmt"/>
         <line num="96" count="2" type="stmt"/>
         <line num="97" count="2" type="stmt"/>
-        <line num="100" count="1" type="stmt"/>
+        <line num="100" count="3" type="stmt"/>
         <line num="105" count="2" type="stmt"/>
         <line num="106" count="2" type="stmt"/>
         <line num="107" count="2" type="cond" truecount="1" falsecount="1"/>
@@ -139,13 +139,13 @@
         <line num="122" count="0" type="stmt"/>
         <line num="127" count="1" type="stmt"/>
         <line num="128" count="1" type="stmt"/>
-        <line num="137" count="1" type="stmt"/>
-        <line num="146" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="146" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.metrics">
       <metrics statements="146" coveredstatements="142" conditionals="103" coveredconditionals="96" methods="25" coveredmethods="25"/>
-      <file name="BusFactorCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\BusFactorCalculator.ts">
+      <file name="BusFactorCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\BusFactorCalculator.ts">
         <metrics statements="18" coveredstatements="18" conditionals="19" coveredconditionals="19" methods="3" coveredmethods="3"/>
         <line num="1" count="2" type="stmt"/>
         <line num="16" count="2" type="stmt"/>
@@ -166,7 +166,7 @@
         <line num="60" count="3" type="stmt"/>
         <line num="68" count="12" type="stmt"/>
       </file>
-      <file name="CalculatorFactory.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\CalculatorFactory.ts">
+      <file name="CalculatorFactory.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\CalculatorFactory.ts">
         <metrics statements="20" coveredstatements="20" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -189,7 +189,7 @@
         <line num="40" count="1" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
       </file>
-      <file name="CorrectnessCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\CorrectnessCalculator.ts">
+      <file name="CorrectnessCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\CorrectnessCalculator.ts">
         <metrics statements="15" coveredstatements="15" conditionals="20" coveredconditionals="20" methods="3" coveredmethods="3"/>
         <line num="1" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
@@ -207,7 +207,7 @@
         <line num="69" count="10" type="stmt"/>
         <line num="71" count="10" type="stmt"/>
       </file>
-      <file name="LicenseCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\LicenseCalculator.ts">
+      <file name="LicenseCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\LicenseCalculator.ts">
         <metrics statements="20" coveredstatements="18" conditionals="12" coveredconditionals="10" methods="3" coveredmethods="3"/>
         <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -230,13 +230,13 @@
         <line num="40" count="1" type="stmt"/>
         <line num="47" count="4" type="cond" truecount="3" falsecount="0"/>
       </file>
-      <file name="MetricCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\MetricCalculator.ts">
+      <file name="MetricCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\MetricCalculator.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="44" type="stmt"/>
         <line num="20" count="39" type="stmt"/>
       </file>
-      <file name="RampUpCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\RampUpCalculator.ts">
+      <file name="RampUpCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\RampUpCalculator.ts">
         <metrics statements="54" coveredstatements="52" conditionals="22" coveredconditionals="18" methods="9" coveredmethods="9"/>
         <line num="1" count="2" type="stmt"/>
         <line num="7" count="2" type="stmt"/>
@@ -293,7 +293,7 @@
         <line num="129" count="41" type="stmt"/>
         <line num="133" count="7" type="stmt"/>
       </file>
-      <file name="ResponsiveMaintainerCalculator.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\src\metrics\ResponsiveMaintainerCalculator.ts">
+      <file name="ResponsiveMaintainerCalculator.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\src\metrics\ResponsiveMaintainerCalculator.ts">
         <metrics statements="16" coveredstatements="16" conditionals="22" coveredconditionals="21" methods="3" coveredmethods="3"/>
         <line num="1" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
@@ -315,7 +315,7 @@
     </package>
     <package name="tests.metrics.TestData">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="NPMTestData.ts" path="C:\Users\Abuka\OneDrive\Desktop\main\trustworthy-module-registry\tests\metrics\TestData\NPMTestData.ts">
+      <file name="NPMTestData.ts" path="C:\Users\DarkMeadow\Documents\GitHub\CS-45000-Phase2\trustworthy-module-registry-master\tests\metrics\TestData\NPMTestData.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="175" count="1" type="stmt"/>
         <line num="392" count="1" type="stmt"/>

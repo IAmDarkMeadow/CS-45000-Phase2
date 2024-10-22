@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "simple-git": "^3.27.0",
+    "winston": "^3.15.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "start-Retrieve": "node out/RetrieveMetrics.js",
+    "start-BusFactor": "node out/BusFactor.js",
+    "start-CorrectnessMetric": "node out/CorrectnessMetric.js",
+    "start-ResponsiveMaintainer": "node out/ResponsiveMaintainer.js",
+    "start-LicenseMetric": "node out/LicenseMetric.js",
+    "generate-uml": "typescript-uml --input src --output diagram.uml"
+  },
+  "dotenv": "^16.4.5",
+  "name": "cs45000-ece46100",
+  "version": "1.0.0",
+  "description": "Brayden Devenport\r Jacob Esparza\r Derek Owen",
+  "main": "out/RetrieveMetrics.js",
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.7.8",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "eslint": "^9.10.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.2",
+    "typescript-uml": "^0.3.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

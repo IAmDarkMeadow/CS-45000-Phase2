@@ -13,6 +13,8 @@ class BusFactorCalculator extends MetricCalculator_1.MetricCalculator {
         const topContributorContributions = data.top5Contributors[0]?.contributions || 0;
         // Calculate the percentage of contributions made by the top contributor
         this.topContributorPercentage = totalContributions > 0 ? topContributorContributions / totalContributions : 0;
+        // For handling cases where totalContributions is 0
+        this.totalContributions = data.averageContributions * this.totalContributors;
     }
     /**
      * Calculates the bus factor metric.
@@ -22,9 +24,9 @@ class BusFactorCalculator extends MetricCalculator_1.MetricCalculator {
         if (!this.validateData()) {
             return 0; // Return 0 if data validation fails
         }
-        // High bus factor risk if only one contributor
-        if (this.totalContributors <= 1) {
-            return 0; // High risk
+        // High bus factor risk if only one contributor, or no contributions at all
+        if (this.totalContributors <= 1 || this.totalContributions === 0) {
+            return 0;
         }
         // Assess bus factor risk based on the percentage of contributions by the top contributor
         if (this.topContributorPercentage >= 0.8) {
@@ -44,6 +46,8 @@ class BusFactorCalculator extends MetricCalculator_1.MetricCalculator {
         return (super.validateData() &&
             typeof this.totalContributors === 'number' &&
             this.totalContributors > 0 &&
+            typeof this.totalContributions === 'number' &&
+            this.totalContributions >= 0 &&
             typeof this.topContributorPercentage === 'number' &&
             this.topContributorPercentage >= 0);
     }

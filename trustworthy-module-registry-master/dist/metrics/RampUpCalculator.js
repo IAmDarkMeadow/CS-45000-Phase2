@@ -38,7 +38,8 @@ class RampUpCalculator extends MetricCalculator_1.MetricCalculator {
             'quick start',
             'documentation',
             'how to use',
-            'introduction'
+            'introduction',
+            'license' // Added 'license' section
         ];
         const contentLower = content.toLowerCase();
         let sectionScore = 0;

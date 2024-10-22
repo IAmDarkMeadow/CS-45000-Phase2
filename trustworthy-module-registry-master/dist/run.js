@@ -47,11 +47,14 @@ switch (command) {
         runTests();
         break;
     default:
+        const notInRootDir = (__dirname.includes("src"));
+        if (notInRootDir) {
+            process.chdir(path.join(__dirname, '..'));
+        }
         if (fs.existsSync(command)) {
             processURLs(command);
         }
         else {
-            console.log("result: ", fs.existsSync(command));
             console.error(`Error: Unknown command or file not found: ${command}`);
             process.exit(1);
         }
@@ -159,7 +162,7 @@ async function calculateMetrics(url) {
     const licenseData = await dataFetcher.fetchLicense();
     const licenseCalculator = CalculatorFactory_1.CalculatorFactory.createCalculator(CalculatorFactory_1.CalculatorTypes.License, licenseData);
     const licenseScore = licenseCalculator ? licenseCalculator.calculate() : 0;
-    const licenseLatency = ((Date.now() - licenseStart) / 1000).toFixed(3);
+    const licenseLatency = Number(((Date.now() - licenseStart) / 1000).toFixed(3));
     metrics.License = licenseScore;
     metrics.License_Latency = licenseLatency;
     // Bus Factor
@@ -167,7 +170,7 @@ async function calculateMetrics(url) {
     const busFactorData = await dataFetcher.fetchContributors();
     const busFactorCalculator = CalculatorFactory_1.CalculatorFactory.createCalculator(CalculatorFactory_1.CalculatorTypes.BusFactor, busFactorData);
     const busFactorScore = busFactorCalculator ? busFactorCalculator.calculate() : 0;
-    const busFactorLatency = ((Date.now() - busFactorStart) / 1000).toFixed(3);
+    const busFactorLatency = Number(((Date.now() - busFactorStart) / 1000).toFixed(3));
     metrics.BusFactor = busFactorScore;
     metrics.BusFactor_Latency = busFactorLatency;
     // Correctness
@@ -175,7 +178,7 @@ async function calculateMetrics(url) {
     const correctnessData = await dataFetcher.fetchTestingResults();
     const correctnessCalculator = CalculatorFactory_1.CalculatorFactory.createCalculator(CalculatorFactory_1.CalculatorTypes.Correctness, correctnessData);
     const correctnessScore = correctnessCalculator ? correctnessCalculator.calculate() : 0;
-    const correctnessLatency = ((Date.now() - correctnessStart) / 1000).toFixed(3);
+    const correctnessLatency = Number(((Date.now() - correctnessStart) / 1000).toFixed(3));
     metrics.Correctness = correctnessScore;
     metrics.Correctness_Latency = correctnessLatency;
     // Ramp Up
@@ -183,7 +186,7 @@ async function calculateMetrics(url) {
     const rampUpData = await dataFetcher.fetchDocumentation();
     const rampUpCalculator = CalculatorFactory_1.CalculatorFactory.createCalculator(CalculatorFactory_1.CalculatorTypes.RampUp, rampUpData);
     const rampUpScore = rampUpCalculator ? rampUpCalculator.calculate() : 0;
-    const rampUpLatency = ((Date.now() - rampUpStart) / 1000).toFixed(3);
+    const rampUpLatency = Number(((Date.now() - rampUpStart) / 1000).toFixed(3));
     metrics.RampUp = rampUpScore;
     metrics.RampUp_Latency = rampUpLatency;
     // Responsive Maintainer
@@ -191,7 +194,7 @@ async function calculateMetrics(url) {
     const responsiveMaintainerData = await dataFetcher.fetchMaintainerMetrics();
     const responsiveMaintainerCalculator = CalculatorFactory_1.CalculatorFactory.createCalculator(CalculatorFactory_1.CalculatorTypes.ResponsiveMaintainer, responsiveMaintainerData);
     const responsiveMaintainerScore = responsiveMaintainerCalculator ? responsiveMaintainerCalculator.calculate() : 0;
-    const responsiveMaintainerLatency = ((Date.now() - responsiveMaintainerStart) / 1000).toFixed(3);
+    const responsiveMaintainerLatency = Number(((Date.now() - responsiveMaintainerStart) / 1000).toFixed(3));
     metrics.ResponsiveMaintainer = responsiveMaintainerScore;
     metrics.ResponsiveMaintainer_Latency = responsiveMaintainerLatency;
     // Calculate NetScore
@@ -200,7 +203,7 @@ async function calculateMetrics(url) {
         (correctnessScore * 0.15) +
         (rampUpScore * 0.15) +
         (responsiveMaintainerScore * 0.1)).toFixed(2));
-    const totalLatency = ((Date.now() - startTime) / 1000).toFixed(3);
+    const totalLatency = Number(((Date.now() - startTime) / 1000).toFixed(3));
     metrics.NetScore = netScore;
     metrics.NetScore_Latency = totalLatency;
     return metrics;
