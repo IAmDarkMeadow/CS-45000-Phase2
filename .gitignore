@@ -2,9 +2,9 @@
 node_modules/
 
 # Compiled JavaScript files
-out/
-build/
-coverage/
+#out/
+#build/
+#coverage/
 
 # TypeScript compiler cache
 *.tsbuildinfo
