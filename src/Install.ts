@@ -23,5 +23,6 @@ function installPak(packageName:string){
 
 installPak('dotenv');
 installPak('winston');
+installPak('node-ssh');
 
 process.exit(0);
