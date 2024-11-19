@@ -33,7 +33,7 @@ const privateKeyPath = '/path/to/your-key.pem';
 
 
 
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand, ListBucketsCommand } from '@aws-sdk/client-s3';
 import { createWriteStream } from 'fs';
 import { Readable } from 'stream';
 
@@ -46,8 +46,18 @@ import { Readable } from 'stream';
 //need to have a active S3Client unit set up like
 //const s3Client = new S3Client({ region: 'your-region' });
 //const s3client = new S3Client({region:'region', credentals: 'credentals'}) etc etc
+
+
+
 export async function downloadFileS3(s3Client: { send: (arg0: any) => any; }, bucketName:string, fileKey:string, local:string) {
     
+
+    try {
+        await s3Client.send(new ListBucketsCommand({}));
+        logger.info(`Connection Successful`)
+      } catch (error) {
+        logger.error("Error checking S3 connection:", error);
+      }
 
     const command = new GetObjectCommand({
         Bucket: bucketName,
@@ -59,7 +69,6 @@ export async function downloadFileS3(s3Client: { send: (arg0: any) => any; }, bu
         const readableStream = data.Body as Readable;
         const writeStream = createWriteStream(local);
         readableStream.pipe(writeStream);
-
         writeStream.on('finish', () => {
             writeStream._destroy  //dont wanna leave it open
             logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`)
