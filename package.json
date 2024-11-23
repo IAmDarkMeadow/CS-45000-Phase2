@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.689.0",
     "adm-zip": "^0.5.16",
     "aws-sdk": "^2.1691.0",
     "axios": "^1.7.7",
@@ -12,6 +13,7 @@
     "simple-git": "^3.27.0",
     "terser": "^5.36.0",
     "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4",
     "winston": "^3.15.0",
@@ -41,8 +43,10 @@
     "@types/jest": "^29.5.14",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.9.0",
+    "@types/supertest": "^6.0.2",
     "@types/terser-webpack-plugin": "^5.0.4",
     "@types/webpack": "^5.28.5",
+    "@types/webpack-node-externals": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
     "eslint": "^9.10.0",
@@ -50,7 +54,8 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3",
-    "typescript-uml": "^0.3.0"
+    "typescript-uml": "^0.3.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "keywords": [],
   "author": "",

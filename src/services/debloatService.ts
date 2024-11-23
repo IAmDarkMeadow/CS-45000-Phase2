@@ -1,11 +1,14 @@
+//debloatService.ts
 import { promisify } from 'util';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { writeFile, readFile, mkdir } from 'fs';
+import { writeFile, readFile, mkdir, existsSync, rmdir } from 'fs';
+import { rm } from 'fs/promises'; // Updated import
 import { zip } from 'zip-a-folder';
 import AdmZip from 'adm-zip'; // Import adm-zip
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import nodeExternals from 'webpack-node-externals';
 
 const writeFileAsync = promisify(writeFile);
 const readFileAsync = promisify(readFile);
@@ -28,21 +31,43 @@ export const debloatPackage = async (packageBuffer: Buffer): Promise<Buffer> => 
   const zip = new AdmZip(zipPath);
   zip.extractAllTo(tempDir, true);
 
-  // Perform tree shaking and minification using Webpack
+  // Read package.json
+  const packageJsonPath = join(tempDir, 'package.json');
+  if (!existsSync(packageJsonPath)) {
+    throw new Error('package.json not found in the package.');
+  }
+  const packageJsonContent = await readFileAsync(packageJsonPath, 'utf8');
+  const packageJson = JSON.parse(packageJsonContent);
+
+  // Determine the entry file
+  const entryFile = packageJson.main ? packageJson.main : 'index.js';
+  const entryPath = join(tempDir, entryFile);
+
+  // Check if the entry file exists
+  if (!existsSync(entryPath)) {
+    throw new Error(`Entry file ${entryFile} not found in the package.`);
+  }
+
+  // Webpack configuration
   const webpackConfig: webpack.Configuration = {
     mode: 'production',
-    entry: join(tempDir, 'index.js'), // Adjust as necessary
+    entry: entryPath,
     output: {
       path: outputDir,
       filename: 'bundle.js',
+      libraryTarget: 'commonjs2',
     },
+    target: 'node',
     optimization: {
       minimize: true,
       minimizer: [new TerserPlugin()],
       usedExports: true,
     },
-    // Additional configurations may be required
+    externals: [nodeExternals()],
   };
+
+  console.log(`Webpack entry point: ${entryPath}`);
+  console.log(`Webpack output directory: ${outputDir}`);
 
   const compiler = webpack(webpackConfig);
 
@@ -51,8 +76,9 @@ export const debloatPackage = async (packageBuffer: Buffer): Promise<Buffer> => 
       if (err || stats?.hasErrors()) {
         console.error('Webpack Error:', err || stats?.toJson().errors);
         reject(err || stats?.toJson().errors);
+      } else {
+        resolve(null);
       }
-      resolve(null);
     });
   });
 
@@ -62,6 +88,10 @@ export const debloatPackage = async (packageBuffer: Buffer): Promise<Buffer> => 
 
   // Read the optimized zip file into a buffer
   const optimizedBuffer = await readFileAsync(optimizedZipPath);
+
+  // Clean up temporary directories
+  await rm(tempDir, { recursive: true, force: true });
+  await rm(outputDir, { recursive: true, force: true });
 
   return optimizedBuffer;
 };
