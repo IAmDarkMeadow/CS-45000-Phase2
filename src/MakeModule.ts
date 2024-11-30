@@ -1,9 +1,4 @@
 import * as AWS from 'aws-sdk';
-import { toASCII } from 'node:punycode';
-
-AWS.config.credentials = null;
-
-AWS.config.update({ region: 'us-east-2' });
 
 // Set up the S3 client
 const s3 = new AWS.S3();

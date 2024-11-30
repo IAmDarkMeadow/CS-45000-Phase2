@@ -23,5 +23,6 @@ function installPak(packageName:string){
 
 installPak('dotenv');
 installPak('winston');
+installPak('aws-sdk');
 
 process.exit(0);
