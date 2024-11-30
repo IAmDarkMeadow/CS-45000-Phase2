@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
