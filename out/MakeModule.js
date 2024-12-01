@@ -33,8 +33,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const AWS = __importStar(require("aws-sdk"));
-AWS.config.credentials = null;
-AWS.config.update({ region: 'us-east-2' });
 // Set up the S3 client
 const s3 = new AWS.S3();
 // Function to upload the module metadata to S3 as a JSON file
