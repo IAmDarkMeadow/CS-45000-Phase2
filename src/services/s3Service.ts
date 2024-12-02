@@ -2,7 +2,8 @@
  * s3Service.ts
  * 
  * Description:
- * This file contains the downloadFileS3 that Grayson created
+ * This file contains the downloadFileS3 that Grayson created. Basic download script with error for no connect, 
+ * needs true source and download location this runs on the client
  * 
  * Author: Grayson DeHerdt, Brayden Devenport
  * Date: 12-02-2024
@@ -22,7 +23,7 @@ import { Readable } from 'stream';
 // Updated code since I have s3Client function already made in aws-confiig.ts
 // All I did was remove (s3Client: { send: (arg0: any) => any; } from function definition
 //
-export async function downloadFileS3(bucketName:string, fileKey:string, local:string) {
+export async function downloadFileS3(bucketName:string, fileKey:string, localPath:string) {
     
 
     try {
@@ -40,13 +41,17 @@ export async function downloadFileS3(bucketName:string, fileKey:string, local:st
     try {
         const data = await s3Client.send(command);
         const readableStream = data.Body as Readable;
-        const writeStream = createWriteStream(local);
+        const writeStream = createWriteStream(localPath);
+
         readableStream.pipe(writeStream);
         writeStream.on('finish', () => {
             writeStream._destroy  //dont wanna leave it open
-            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`)
+            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${localPath}`)
            });
     } catch (error) {
-        logger.error(`Error downloading ${fileKey} from ${bucketName} to ${local}:`, error);
+        logger.error(`Error downloading ${fileKey} from ${bucketName} to ${localPath}:`, error);
     }
 };
+
+//this runs on server
+//zips file found after locating through index
