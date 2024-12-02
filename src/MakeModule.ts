@@ -28,7 +28,10 @@ interface ModuleMetadata {
     s3Location: string;
 }
 
-// This function is in
+//
+// uploadModuleMetadata function code is in src/services/s3Service.ts
+//
+
 // Function to upload the module metadata to S3 as a JSON file
 async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Promise<void> {
     const bucketName = 'registry-storage';  // Replace with your S3 bucket name

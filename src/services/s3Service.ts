@@ -12,11 +12,14 @@
  * 
  */
 
-import logger from "../utils/Logger.js";
+import logger from "../utils/Logger.js"; // For Error handling
 import s3Client from '../config/aws-config.js';
-import { GetObjectCommand, ListBucketsCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, GetObjectCommand, ListBucketsCommand } from '@aws-sdk/client-s3';
 import { createWriteStream } from 'fs';
 import { Readable } from 'stream';
+import dotenv from 'dotenv'; // For protected enviroment Variables
+
+dotenv.config();
 
 
 //
@@ -54,5 +57,55 @@ export async function downloadFileS3(bucketName:string, fileKey:string, localPat
     }
 };
 
-//this runs on server
-//zips file found after locating through index
+
+//
+// Jacob Esparza's uploadModuleMetadata with some updates based on my packageModel.ts file
+//
+// Updated by Brayden
+//
+
+import { ModuleMetadata } from '../models/packageModel.js';  // Importing the ModuleMetadata interfacce for type safety
+import { error } from "console";
+
+// Funtion to upload the module metadata to S3 as a JSON file
+
+async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Promise<void> {
+    // Get the S3 bucket name from environment variables
+    const bucketName = process.env.S3_BUCKET_NAME!; 
+
+    if (!bucketName) {
+        // I do not know if this will work without the try/catch commands. 
+        logger.error(`S3_BUCKET_NAME is not defined in the environment variables.`, error)
+    } 
+
+    // Create a metadata file name based on the module name and version
+    const metadataFileName = `ModuleMetadata/${moduleMetadata.name}-${moduleMetadata.version}.json`;
+
+    // Convert the module metadata to JSON string
+    const jsonMetadata = JSON.stringify(moduleMetadata, null, 2);
+
+    // Define the parameters for the S3 upload
+    const params = {
+        Bucket: bucketName,             // S3 bucket name
+        Key: metadataFileName,          // S3 object key (filename)
+        Body: jsonMetadata,             // Content of the file (JSON)
+        ContentType: 'application/json',// Specify content type as JSON
+    };
+
+    // Create an S3 PutObjectCommand with the defined parameters
+    const command = new PutObjectCommand(params);
+
+
+    try {
+
+        // Send the upload command to S3
+        await s3Client.send(command);
+
+        logger.info(`Successfully uploaded metadata for ${moduleMetadata.name} to S3!`);
+
+    } catch (error) {
+
+        logger.error(`Error uploading metadata for ${moduleMetadata.name}:`, error);
+        //throw error;
+    }
+};
