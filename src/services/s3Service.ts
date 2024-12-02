@@ -2,12 +2,13 @@
  * s3Service.ts
  * 
  * Description:
- * This file contains the downloadFileS3 that Grayson created. Basic download script with error for no connect, 
- * needs true source and download location this runs on the client
+ * This file contains the functions that have connect to the S3 service.
+ * This file contains the downloadFileS3 that Grayson created. 
+ * It also contains the uploadModuleMetadata that Jacob Esparza created. 
  * 
- * Author: Grayson DeHerdt, Brayden Devenport
+ * Author: Grayson DeHerdt, Brayden Devenport, Jacob Esparza
  * Date: 12-02-2024
- * Version: 1.0
+ * Version: 1.1
  * 
  */
 

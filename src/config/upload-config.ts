@@ -2,7 +2,9 @@
  * upload-config.ts
  * 
  * Description:
- * This file is responsible for configuring the fifle upload process using Multer and integrating it with Amazon S3. 
+ * This file is responsible for configuring the fifle upload process using Multer 
+ * and integrating it with Amazon S3.
+ *  
  * 
  * Author: Brayden Devenport
  * Date: 12-01-2024
