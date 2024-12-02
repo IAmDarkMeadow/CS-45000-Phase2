@@ -1,5 +1,9 @@
 /*
  *  MakeModule.ts
+ *  
+ *  Interface got moved to /src/models/packageModels
+ *  uploadModuleMetadata function got moved to /src/service/s3Service.ts
+ * 
  *  Description: This is basically a guide to see where I put certian functions from this file
  *  so that if you. I did this to make the project modular and scalar so that it would be easier to decode.
  * 
