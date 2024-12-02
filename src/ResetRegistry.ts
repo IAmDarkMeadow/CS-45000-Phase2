@@ -1,3 +1,27 @@
+/*
+ *  ResetRegistry.ts
+ *  
+ *  All functions are in /src/controllers/resetController.ts
+ * 
+ *  When I converted this code over to resetController I made it so that it is modular
+ *  and you will not need const s3 = new AWS.S3() to make s3 default. 
+ *  
+ * Description: This is basically a guide to see where I put certian functions from this file
+ *  so that if you. I did this to make the project modular and scalar so that it would be easier to decode.
+ * 
+ *  Author: Jacob Esparza
+ *  Edit/Notes: Brayden Devenport
+ *  Date: 12-02-2024
+ *  Version: 0.5
+ *   
+ */
+
+
+
+
+
+
+
 import * as AWS from 'aws-sdk';
 
 // Initialize the S3 client

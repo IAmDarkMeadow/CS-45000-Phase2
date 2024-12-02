@@ -69,7 +69,7 @@ import { error } from "console";
 
 // Funtion to upload the module metadata to S3 as a JSON file
 
-async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Promise<void> {
+export async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Promise<void> {
     // Get the S3 bucket name from environment variables
     const bucketName = process.env.S3_BUCKET_NAME!; 
 
@@ -106,6 +106,6 @@ async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Promise<voi
     } catch (error) {
 
         logger.error(`Error uploading metadata for ${moduleMetadata.name}:`, error);
-        //throw error;
+        throw error;
     }
 };
