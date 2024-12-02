@@ -6,7 +6,7 @@
  * 
  * Author: Grayson DeHerdt
  * Date: 9-29-2024
- * Version: 1.0
+ * Version: 2.0
  * 
  */
 
@@ -21,13 +21,22 @@ function installPak(packageName:string){
     }
 }
 
+installPak('multer');
+installPak('multer-s3');
+installPak('express');
+installPak('express-validator');
+installPak('fs');
+installPak('path');
+installPak('adm-zip');
 installPak('dotenv');
 installPak('winston');
 installPak('node-ssh');
 installPak('@aws-sdk/client-s3');
-installPak('fs');
+installPak('aws-sdk');
 installPak('stream');
 installPak('@aws-sdk/credential-provider-env');
 installPak('@smithy/types');
+installPak('mysql2');
+installPak('mongoose');
 
 process.exit(0);

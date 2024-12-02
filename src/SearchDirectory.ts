@@ -1,7 +1,30 @@
+/*
+ *  SearchDirectory.ts
+ *  
+ *  All function code is copied over to /src/controllers/packageController.ts for modluarity.
+ *  I moved every function into and updated the code so that it works now with 'import s3Client from '../config/aws-config.js';'
+ * 
+ *  Description: This is basically a guide to see where I put certian functions from this file
+ *  so that if you. I did this to make the project modular and scalar so that it would be easier to decode.
+ * 
+ *  Author: Jacob Esparza
+ *  Edit/Notes: Brayden Devenport
+ *  Date: 12-02-2024
+ *  Version: 0.5
+ *   
+ */
+
+
+
+
 import AWS from 'aws-sdk';
 
 // Initialize S3 Client
 const s3 = new AWS.S3();
+
+//
+// All code below is over on /scr/controllers/packageController.ts
+//
 
 async function SearchJSON(metadata: any, expression: string) {
     try {
