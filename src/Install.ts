@@ -25,6 +25,7 @@ function installPak(packageName:string){
 
 installPak('dotenv');
 installPak('winston');
+installPak('aws-sdk');
 installPak('node-ssh');
 installPak('@aws-sdk/client-s3');
 installPak('fs');

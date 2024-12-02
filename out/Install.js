@@ -24,5 +24,6 @@ function installPak(packageName) {
 }
 installPak('dotenv');
 installPak('winston');
+installPak('aws-sdk');
 process.exit(0);
 //# sourceMappingURL=Install.js.map

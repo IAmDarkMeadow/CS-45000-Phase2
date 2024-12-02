@@ -1,8 +1,8 @@
 {
   "dependencies": {
+    "aws-sdk": "^2.1692.0",
     "@aws-sdk/client-s3": "^3.688.0",
     "@aws-sdk/credential-provider-env": "^3.686.0",
-    "aws-sdk": "^2.1691.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
