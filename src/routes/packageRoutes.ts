@@ -10,10 +10,10 @@
  * 
  */
 
-//Router allows us to define modular, mountable route handlers. 
-import { Router } from 'express';
-//import the uploadPackage functioin from Package Controller
-import { uploadPackage } from '../controllers/packageController';
+
+import { Router } from 'express';// Router allows us to define modular, mountable route handlers. 
+import { uploadPackage } from '../controllers/packageController';//import the uploadPackage functioin from Package Controller
+import upload from '../utils/upload-config';
 
 //
 //Creates an instance of Router to defiine routes speciffic to package operations
