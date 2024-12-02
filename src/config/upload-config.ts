@@ -16,7 +16,7 @@ import { Request } from 'express'; // Import Request type from Express to extend
 import multer from 'multer';  // Middleware for handling file upload
 import multerS3 from 'multer-s3'; // Integration of multer with AWS S3 for direct upload
 import s3Client from './aws-config'; // AWS S3 client configuration
-import logger from './Logger.js'; //For debug purposes
+import logger from '../utils/Logger.js'; //For debug purposes
 
 
 
