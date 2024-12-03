@@ -2,9 +2,9 @@
 node_modules/
 
 # Compiled JavaScript files
-#out/
-#build/
-#coverage/
+# out/
+# build/
+# coverage/
 
 # TypeScript compiler cache
 *.tsbuildinfo
@@ -36,3 +36,12 @@ Thumbs.db
 *.tar
 *.rar
 KeyPairPem.pem
+src/Dummyfile.ts
+src/Debloat.ts
+src/Upload.ts
+src/Old Code/Upload.ts
+src/Old Code/Dummyfile.ts
+src/Old Code/Debloat.ts
+src/Old Code/uploadController.ts
+src/Old Code/debloatServiceold.ts
+/src/Old Code
