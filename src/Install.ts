@@ -38,5 +38,6 @@ installPak('@aws-sdk/credential-provider-env');
 installPak('@smithy/types');
 installPak('mysql2');
 installPak('mongoose');
+installPak('semver')
 
 process.exit(0);
