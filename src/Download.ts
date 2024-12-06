@@ -58,7 +58,7 @@ export async function downloadFileS3(s3Client: {send: (arg0: any) => any; }, buc
 
     try {
         await s3Client.send(new ListBucketsCommand({}));
-        logger.info(`Connection Successful`)
+        logger.info(`Connection Successful`);
       } catch (error) {
         logger.error("Error checking S3 connection:", error);
         
@@ -76,7 +76,7 @@ export async function downloadFileS3(s3Client: {send: (arg0: any) => any; }, buc
         readableStream.pipe(writeStream);
         writeStream.on('finish', () => {
              //dont wanna leave it open
-            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`)
+            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`);
            });
            writeStream._destroy;
     } catch (error) {
