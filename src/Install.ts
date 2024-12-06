@@ -31,5 +31,7 @@ installPak('fs');
 installPak('stream');
 installPak('@aws-sdk/credential-provider-env');
 installPak('@smithy/types');
+installPak('adm-zip');
+installPak('crypto');
 
 process.exit(0);
