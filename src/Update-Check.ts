@@ -23,7 +23,7 @@ function calculateFileHash(filePath: string): string {
       }
     
 }
-
+//A
 //hallucination
 //import * as crc64 from 'crc64'
 /*const calculateCRC64 = (filePath: string): string => {
