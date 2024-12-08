@@ -20,11 +20,10 @@
 
 import { NodeSSH } from 'node-ssh';
 import * as fs from 'fs';
-import logger from "../src/utils/Logger.js";
+
+import logger from "./Logger";
+var AdmZip = require("adm-zip");
 //idk how we are storing these yet
-const host = 'your-ec2-public-dns';
-const username = 'ec2-user'; 
-const privateKeyPath = '/path/to/your-key.pem';
 //const remoteFilePath = '/path/to/remote/file';
 //const localFilePath = './downloaded-file';
 
@@ -63,18 +62,21 @@ import { Readable } from 'stream';
 //const s3Client = new S3Client({ region: 'your-region' });
 //const s3client = new S3Client({region:'region', credentals: 'credentals'}) etc etc
 
-
-//
-// The DownloadFileS3 is currently in the src/services/s3Service.ts
-// 
-export async function downloadFileS3(s3Client: { send: (arg0: any) => any; }, bucketName:string, fileKey:string, local:string) {
+const zipFile = (downloadPath:string, zipPath:string) => {
+  const zip = new AdmZip();
+  zip.addLocalFile(downloadPath);
+  zip.writeZip(zipPath);
+  console.log(`File zipped successfully as ${zipPath}`);
+  logger.info(`File zipped successfully as ${zipPath}`);
+};
+export async function downloadFileS3(s3Client: {send: (arg0: any) => any; }, bucketName:string, fileKey:string, local:string) {
     
-
     try {
         await s3Client.send(new ListBucketsCommand({}));
-        logger.info(`Connection Successful`)
+        logger.info(`Connection Successful`);
       } catch (error) {
         logger.error("Error checking S3 connection:", error);
+        
       }
 
     const command = new GetObjectCommand({
@@ -88,12 +90,15 @@ export async function downloadFileS3(s3Client: { send: (arg0: any) => any; }, bu
         const writeStream = createWriteStream(local);
         readableStream.pipe(writeStream);
         writeStream.on('finish', () => {
-            writeStream._destroy  //dont wanna leave it open
-            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`)
+             //dont wanna leave it open
+            logger.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`);
            });
+           writeStream._destroy;
     } catch (error) {
         logger.error(`Error downloading ${fileKey} from ${bucketName} to ${local}:`, error);
     }
+    let localZip = local + ".zip";
+    zipFile(local, localZip);
 };
 
 
@@ -101,3 +106,5 @@ export async function downloadFileS3(s3Client: { send: (arg0: any) => any; }, bu
 
 //this runs on server
 //zips file found after locating through index
+
+
