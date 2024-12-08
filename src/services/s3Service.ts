@@ -5,6 +5,8 @@
  * This file contains the functions that have connect to the S3 service.
  * This file contains the downloadFileS3 that Grayson created. 
  * It also contains the uploadModuleMetadata that Jacob Esparza created. 
+ * It also containt the uploadToS3 which will upload the contents of the 
+ * zip file into the correct bucket name.
  * 
  * Author: Grayson DeHerdt, Brayden Devenport, Jacob Esparza
  * Date: 12-02-2024

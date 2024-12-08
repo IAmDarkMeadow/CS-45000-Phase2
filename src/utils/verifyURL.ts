@@ -8,10 +8,10 @@
  *  It will then check if the repository field exists and points to GitHub.
  * If it exists, it will get the repository URL and convert it to HTTPS format.
  * Finally, the system will return the formatted URL for use in the rest of the program.
- * Then this will go through and store the need informationd f
+ * Then this will go through and store the repo and owner in repo info after we figure out if it is a github repo. 
  * 
- * Author: Logan Kurker
- * Date: 9-29-2024
+ * Author: Brayden Devenport
+ * Date: 12-8-2024
  * Version: 1.0
  * 
  */
