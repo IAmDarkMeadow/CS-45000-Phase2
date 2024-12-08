@@ -1,5 +1,5 @@
 import {downloadFileS3} from './Download';
-import logger from "./Logger" ;
+import logger from "./utils/Logger" ;
 //compares server metadata file hash
 
 //updates are not automatic, and update acts as a repair function

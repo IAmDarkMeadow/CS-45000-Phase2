@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trustworthy Module Registry</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+	<!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Upload</a>
+        <a href="update.html">Update</a>
+        <a href="rate.html">Rate a Module</a>
+		<a href="search.html">Search Registry</a>
+		<a href="view.html">View Registry</a>
+    </div>
+	
+	<!-- Page Content -->
+    <div class="content">
+        <h1>Search Directory</h1>
+        <form id="searchForm">
+            <input type="text" id="userInput" placeholder="Enter search query" required>
+            <button type="submit">Search</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Version</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody id="results">
+                <!-- Rows will be populated by TypeScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const userInput = document.getElementById('userInput').value;
+
+            fetch('http://localhost:5000/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userInput: userInput })
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Insert the HTML returned from the server into the tbody
+                const resultsTbody = document.getElementById('results');
+                
+                // Clear previous results if any
+                resultsTbody.innerHTML = '';
+                
+                // Append the new HTML (assuming it's a <tr> element)
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                // Append each result from the server as a new row in the table
+                const resultRows = tempDiv.querySelectorAll('tr');
+                resultRows.forEach(row => {
+                    resultsTbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
