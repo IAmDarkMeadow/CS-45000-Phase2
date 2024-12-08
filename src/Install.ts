@@ -10,6 +10,8 @@
  * 
  */
 
+
+
 import { execSync } from "node:child_process";
 function installPak(packageName:string){
     const installCommand = `npm install ${packageName}`
@@ -31,11 +33,13 @@ installPak('dotenv');
 installPak('winston');
 installPak('node-ssh');
 installPak('@aws-sdk/client-s3');
-installPak('aws-sdk');
+installPak('fs');
 installPak('stream');
 installPak('@aws-sdk/credential-provider-env');
 installPak('@smithy/types');
-installPak('mysql2');
+installPak('adm-zip');
+installPak('crypto');
+installPak('aws-sdk');
 installPak('mongoose');
 installPak('semver');
 installPak('archiver');
