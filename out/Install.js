@@ -44,5 +44,6 @@ installPak('mongoose');
 installPak('semver');
 installPak('archiver');
 installPak('uuid');
+installPak('cors');
 process.exit(0);
 //# sourceMappingURL=Install.js.map
