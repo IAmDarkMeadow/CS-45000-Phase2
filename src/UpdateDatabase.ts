@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import axios from 'axios';
+import {ModuleMetadata} from './models/packageModel'
 
 // GitHub API base URL
 import simpleGit from 'simple-git';
@@ -58,8 +59,8 @@ async function getLatestRelease(owner: string, repo: string): Promise<string> {
 }
 */
 // Function to connect to GitHub and get the latest version and download the repo
-export async function connectToGitHubAndDownloadRepo(ProcessJSON: (jsonContent: any) => void): Promise<void> {
-   let repoUrl = ProcessJSON.repoUrl;
+export async function connectToGitHubAndDownloadRepo(ProcessJSON: ModuleMetadata): Promise<void> {
+   let repoUrl = ProcessJSON.githublink;
    
   try {
     // Extract repo details from the provided URL
