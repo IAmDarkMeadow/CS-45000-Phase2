@@ -73,8 +73,8 @@ const upload = (0, multer_1.default)({
         }
     },
     // Set limits on the uploaded file
-    // Maximum file size: 10 MB
-    limits: { fileSize: 10 * 1024 * 1024 },
+    // Maximum file size: 1 GB
+    limits: { fileSize: 1 * 1024 * 1024 * 1024 },
 });
 // Log that the upload configuration is successfully set up
 Logger_js_1.default.info('Upload configuration initialized successfully');
