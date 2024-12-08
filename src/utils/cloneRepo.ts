@@ -1,4 +1,17 @@
-// src/utils/cloneRepo.ts
+/*
+ * cloneRepo.ts
+ *
+ * 
+ * Description:
+ * This file provides a utility function to clone a GitHub repository into a specified
+ * temporary directory. It uses the `simple-git` library for Git operations and ensures
+ * that the target directory is prepared before cloning.
+ * 
+ * Author: Brayden Devenport
+ * Date: 12-8-2024
+ * Version: 1.0
+ * 
+ */
 import simpleGit, { SimpleGit } from 'simple-git';
 import path from 'path';
 import fs from 'fs-extra';

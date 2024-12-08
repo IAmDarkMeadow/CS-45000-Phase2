@@ -3,6 +3,7 @@
  * 
  * Description:
  * This file contains the TypeScript interface for module metadata used in the master program.
+ * This file also contains a function that will zip a directory into a zip file.
  * 
  * Author: Jacob Esparza, Brayden Devenport
  * Date: 12-02-2024
@@ -11,7 +12,6 @@
  */
 
 import archiver from 'archiver';
-import path from 'path';
 import fs from 'fs-extra';
 
 // From Jacob MakeModule.ts file 
@@ -26,6 +26,8 @@ export interface ModuleMetadata {
   githublink: string;   // The githublink that we used
 }
 
+
+// zipDirectory will zip the contents in a directory in a zip file. 
 export const zipDirectory = async (sourceDir: string, outPath: string): Promise<void> => {
   const archive = archiver('zip', { zlib: { level: 9 } });
   const stream = fs.createWriteStream(outPath);

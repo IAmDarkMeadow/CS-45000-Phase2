@@ -6,6 +6,8 @@
  * This file contains the functions that have connect to the S3 service.
  * This file contains the downloadFileS3 that Grayson created.
  * It also contains the uploadModuleMetadata that Jacob Esparza created.
+ * It also containt the uploadToS3 which will upload the contents of the
+ * zip file into the correct bucket name.
  *
  * Author: Grayson DeHerdt, Brayden Devenport, Jacob Esparza
  * Date: 12-02-2024
@@ -154,7 +156,7 @@ function uploadToS3(filePath, bucketName, keyPrefix) {
         const command = new client_s3_1.PutObjectCommand(params);
         try {
             yield aws_config_1.default.send(command);
-            const s3Location = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+            const s3Location = `s3://${bucketName}/Modules/${key}`;
             Logger_1.default.info(`File uploaded successfully to ${s3Location}`);
             return s3Location;
         }

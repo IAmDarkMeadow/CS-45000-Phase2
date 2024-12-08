@@ -1,87 +1,122 @@
 /*
  * debloatService.ts
  *
- * Place Holder file
  * 
+ * Description:
+ * This module provides functionality to "debloat" a directory by removing
+ * unnecessary or excluded files and directories and minifying JavaScript files
+ * for optimized storage and performance. It is designed to work recursively
+ * through a directory structure, ensuring all nested files and folders are
+ * processed.
  * 
+ * Author: Brayden Devenport
+ * Date: 12-8-2024
+ * Version: 1.0
  * 
- * 
- * 
- * 
- * 
-*/
+ */
 
 
-import { build } from 'esbuild';
+
+import { minify } from 'terser';
 import path from 'path';
 import fs from 'fs-extra';
 import logger from '../utils/Logger.js';
 
+
+
+const EXCLUDED_DIRS = ['test', 'tests', '__tests__', 'docs', 'examples', 'example', 'benchmark', 'benchmarks', 'coverage'];
+const EXCLUDED_FILES = ['README.md', 'LICENSE', 'CHANGELOG.md', '.eslintrc', '.prettierrc', 'tsconfig.json', 'webpack.config.js'];
+
 /**
- * Performs tree shaking and minification on the specified directory using esbuild.
- * @param directory - The directory containing the module to optimize.
- * @returns A promise that resolves when debloating is complete.
+ * Recursively removes excluded directories and files from the specified path
+ * @param dirPath - The root directory path to debloat
  */
-export const debloatModule = async (directory: string): Promise<void> => {
+
+export const debloatModule = async (dirPath: string): Promise<void> => {
   try {
-    logger.info(`Starting debloating process for directory: ${directory}`);
 
-    // Define entry point
-    let entryPoint = '';
+    logger.info(`Starting debloat process for ${dirPath}`);
 
-    // Attempt to find entry point from package.json
-    const packageJsonPath = path.join(directory, 'package.json');
-    if (await fs.pathExists(packageJsonPath)) {
-      const packageJson = await fs.readJson(packageJsonPath);
-      if (packageJson.main) {
-        entryPoint = path.join(directory, packageJson.main);
-      } else if (packageJson.module) {
-        entryPoint = path.join(directory, packageJson.module);
-      } else {
-        // Default to index.js if main is not specified
-        entryPoint = path.join(directory, 'index.js');
-      }
-    } else {
-      // If package.json does not exist, default to index.js
-      entryPoint = path.join(directory, 'index.js');
-    }
+    // Recursively traverse the directory
+    await traverseAndClean(dirPath);
 
-    // Check if the entry point exists
-    if (!(await fs.pathExists(entryPoint))) {
-      throw new Error(`Entry point not found at ${entryPoint}`);
-    }
+    // Do minification after cleaning
 
-    // Define output directory
-    const outdir = path.join(directory, 'dist');
+    minifyJavaScriptFiles(dirPath)
 
-    // Ensure output directory is clean
-    await fs.remove(outdir);
-    await fs.ensureDir(outdir);
 
-    // Perform the build with esbuild
-    await build({
-      entryPoints: [entryPoint],
-      bundle: true,
-      minify: true,
-      sourcemap: false,
-      treeShaking: true,
-      platform: 'node', // Adjust based on your module's target environment
-      target: ['es2015'], // Adjust based on your module's target JavaScript version
-      outfile: path.join(outdir, 'bundle.js'),
-      logLevel: 'silent', // Suppress esbuild logs; handle logging manually
-    });
-
-    logger.info(`Debloating completed successfully. Output at ${outdir}`);
-
-    // Optionally, you can replace the original files with the debloated bundle
-    // For example, replace index.js with the bundle
-    // await fs.copy(path.join(outdir, 'bundle.js'), entryPoint, { overwrite: true });
-
-    // Alternatively, you can keep the debloated code in the 'dist' folder
-    // and adjust your packaging process to include 'dist' instead of the original source
-
+    logger.info(`Debloat process completed for ${dirPath}`);
   } catch (error) {
-    logger.error(`Error during debloating process: ${(error as Error).message}`);
+
+    logger.error(`Error during debloat process: ${error}`);
     throw error;
   }
 };
+
+/**
+ * Helper function to traverse directories and remove excluded items
+ * @param currentPath - Current directory path in traversal
+ */
+
+const traverseAndClean = async (currentPath: string): Promise<void> => {
+
+  const items = await fs.readdir(currentPath);
+
+  for (const item of items) {
+    const itemPath = path.join(currentPath, item);
+    const stats = await fs.stat(itemPath);
+
+    if (stats.isDirectory()) {
+
+      if (EXCLUDED_DIRS.includes(item.toLowerCase())) {
+
+
+        await fs.remove(itemPath);
+        logger.info(`Removed directory: ${itemPath}`);
+      } else {
+        // Continue traversing subdirectories
+ 
+        await traverseAndClean(itemPath);
+      }
+    } else if (stats.isFile()) {
+
+      if (EXCLUDED_FILES.includes(item)) {
+
+        await fs.remove(itemPath);
+        logger.info(`Removed file: ${itemPath}`);
+      }
+    }
+  }
+};
+
+
+const minifyJavaScriptFiles = async (dirPath: string): Promise<void> => {
+ 
+  const items = await fs.readdir(dirPath);
+
+  for (const item of items) {
+    const itemPath = path.join(dirPath, item);
+    const stats = await fs.stat(itemPath);
+
+    if (stats.isDirectory()) {
+     
+      await minifyJavaScriptFiles(itemPath); // Recursively minify in subdirectories
+    } else if (stats.isFile() && path.extname(item) === '.js') {
+    
+      try {
+        const code = await fs.readFile(itemPath, 'utf-8');
+        const result = await minify(code);
+
+        if (result.code) {
+     
+          await fs.writeFile(itemPath, result.code, 'utf-8');
+          logger.info(`Minified JavaScript file: ${itemPath}`);
+        }
+      } catch (error) {
+   
+        logger.error(`Error minifying file ${itemPath}: ${error}`);
+      }
+    }
+  }
+};
+

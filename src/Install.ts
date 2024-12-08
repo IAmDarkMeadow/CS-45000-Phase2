@@ -27,7 +27,6 @@ installPak('express');
 installPak('express-validator');
 installPak('fs');
 installPak('path');
-installPak('adm-zip');
 installPak('dotenv');
 installPak('winston');
 installPak('node-ssh');

@@ -34,35 +34,6 @@ exports.ListModules = ListModules;
 exports.RegularExpressionSearch = RegularExpressionSearch;
 const aws_config_js_1 = __importDefault(require("../config/aws-config.js")); // Importing configured AWS S3 client
 const client_s3_1 = require("@aws-sdk/client-s3"); // Import necessary AWS commands
-// // check back if not used
-// // Controller function to create module metadata
-// export const createMetaData = async (req: Request, res: Response) => {
-//     //Extract metadate fields from the request body
-//   const { name, version, description, s3Location, githublink } = req.body;
-//   // Validate request data 
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     // If validation fails, return a 400 Bad Request response with the error details
-//     return res.status(400).json({ errors: errors.array() });
-//   }
-//   // Create an object with the extracted metadata fields
-//   const moduleData = {
-//     name,          // Name of the module/package
-//     version,       // Version of the module/package
-//     description,   // Description of the module/package (optional)
-//     s3Location,    // Location of the module/package in Amazon S3 
-//     githublink,
-//   };
-//   try {
-//     // Upload metadata to S3
-//     await uploadModuleMetadata(moduleData);
-//     // Respond with a 201 Created status if upload is successful
-//     res.status(201).json({ message: `Successfully uploaded metadata for ${name}` });
-//   } catch (error) {
-//     // If any error occurs during the upload, respond with a 500 Internal Server Error status
-//     res.status(500).json({ error: `Error uploading metadata for ${name}:` });
-//   }
-// };
 // Function to search through metadata JSON for a given expression
 function SearchJSON(metadata, expression) {
     return __awaiter(this, void 0, void 0, function* () {
