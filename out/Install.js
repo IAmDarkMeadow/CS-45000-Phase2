@@ -40,5 +40,7 @@ installPak('@smithy/types');
 installPak('mysql2');
 installPak('mongoose');
 installPak('semver');
+installPak('archiver');
+installPak('uuid');
 process.exit(0);
 //# sourceMappingURL=Install.js.map

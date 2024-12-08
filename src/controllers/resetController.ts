@@ -14,7 +14,7 @@
 
 
 
-import logger from "../utils/Logger.js"; // For Error handling
+import logger from "../utils/Logger"; // For Error handling
 import { Request, Response } from 'express';
 import s3Client from '../config/aws-config.js';
 import { ListObjectsV2Command, DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
