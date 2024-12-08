@@ -5,6 +5,7 @@ import axios from 'axios';
 import simpleGit from 'simple-git';
 import * as path from 'path';
 import * as fs from 'fs';
+import {handleUpload} from './services/uploadService'
 
 // GitHub API base URL
 const GITHUB_API_URL = 'https://api.github.com';
@@ -34,7 +35,7 @@ async function getLatestRelease(owner: string, repo: string): Promise<string> {
 }
 
 // Function to download the repository (clone or download ZIP)
-async function downloadRepo(owner: string, repo: string, latestVersion: string): Promise<void> {
+/*async function downloadRepo(owner: string, repo: string, latestVersion: string): Promise<void> {
   try {
     // Clone the repository using git (you could also use 'git archive' to download a ZIP of the repo)
     const repoUrl = `https://github.com/${owner}/${repo}.git`;
@@ -55,7 +56,7 @@ async function downloadRepo(owner: string, repo: string, latestVersion: string):
     throw new Error(`Error downloading the repository: ${error}`);
   }
 }
-
+*/
 // Function to connect to GitHub and get the latest version and download the repo
 export async function connectToGitHubAndDownloadRepo(ProcessJSON: (jsonContent: any) => void): Promise<void> {
    let repoUrl = ProcessJSON.repoUrl;
@@ -70,7 +71,7 @@ export async function connectToGitHubAndDownloadRepo(ProcessJSON: (jsonContent: 
     if (latestVersion != ProcessJSON.version) {
 
     // Download the repository using the latest version tag
-        await downloadRepo(owner, repo, latestVersion);
+        await handleUpload(repoUrl,false);
     }
   else console.log('Latest version matches!')
   } catch (error) {
