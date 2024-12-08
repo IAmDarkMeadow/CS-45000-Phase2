@@ -8,13 +8,14 @@ const dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables from .env file
 dotenv_1.default.config();
 // Determine if we're inside EC2 (for example by checking an EC2-specific environment variable or IP)
-const isEC2 = process.env.EC2_INSTANCE === 'true'; // Set this environment variable in EC2
+const isEC2 = process.env.EC2_INSTANCE === 'true';
 const connection = mysql2_1.default.createConnection({
     host: isEC2 ? 'registry.c9iuei0e04va.us-east-2.rds.amazonaws.com' : process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: parseInt(process.env.DB_PORT || '3306', 10),
+    connectTimeout: 30000,
 });
 // Connect to the database
 connection.connect((err) => {
