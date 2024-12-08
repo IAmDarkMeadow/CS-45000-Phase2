@@ -6,6 +6,7 @@ import simpleGit from 'simple-git';
 import * as path from 'path';
 import * as fs from 'fs';
 import {handleUpload} from './services/uploadService'
+import {ModuleMetadata} from './models/packageModel'
 
 // GitHub API base URL
 const GITHUB_API_URL = 'https://api.github.com';
@@ -58,8 +59,8 @@ async function getLatestRelease(owner: string, repo: string): Promise<string> {
 }
 */
 // Function to connect to GitHub and get the latest version and download the repo
-export async function connectToGitHubAndDownloadRepo(ProcessJSON: (jsonContent: any) => void): Promise<void> {
-   let repoUrl = ProcessJSON.repoUrl;
+export async function connectToGitHubAndDownloadRepo(ProcessJSON: ModuleMetadata): Promise<void> {
+   let repoUrl = ProcessJSON.githublink;
    
   try {
     // Extract repo details from the provided URL
@@ -78,6 +79,9 @@ export async function connectToGitHubAndDownloadRepo(ProcessJSON: (jsonContent: 
     console.error('Error:', error);
   }
 }
+
+
+
 
 // Example usage: Provide the GitHub repository URL
 

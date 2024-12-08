@@ -24,11 +24,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadFileS3 = downloadFileS3;
-const Logger_js_1 = __importDefault(require("../src/utils/Logger.js"));
+const Logger_1 = __importDefault(require("./utils/Logger"));
+var AdmZip = require("adm-zip");
 //idk how we are storing these yet
-const host = 'your-ec2-public-dns';
-const username = 'ec2-user';
-const privateKeyPath = '/path/to/your-key.pem';
 //const remoteFilePath = '/path/to/remote/file';
 //const localFilePath = './downloaded-file';
 //export async function downloadFileEC2 (remoteFilePath:string, localFilePath:string) {
@@ -57,17 +55,21 @@ const fs_1 = require("fs");
 //need to have a active S3Client unit set up like
 //const s3Client = new S3Client({ region: 'your-region' });
 //const s3client = new S3Client({region:'region', credentals: 'credentals'}) etc etc
-//
-// The DownloadFileS3 is currently in the src/services/s3Service.ts
-// 
+const zipFile = (downloadPath, zipPath) => {
+    const zip = new AdmZip();
+    zip.addLocalFile(downloadPath);
+    zip.writeZip(zipPath);
+    console.log(`File zipped successfully as ${zipPath}`);
+    Logger_1.default.info(`File zipped successfully as ${zipPath}`);
+};
 function downloadFileS3(s3Client, bucketName, fileKey, local) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield s3Client.send(new client_s3_1.ListBucketsCommand({}));
-            Logger_js_1.default.info(`Connection Successful`);
+            Logger_1.default.info(`Connection Successful`);
         }
         catch (error) {
-            Logger_js_1.default.error("Error checking S3 connection:", error);
+            Logger_1.default.error("Error checking S3 connection:", error);
         }
         const command = new client_s3_1.GetObjectCommand({
             Bucket: bucketName,
@@ -79,13 +81,16 @@ function downloadFileS3(s3Client, bucketName, fileKey, local) {
             const writeStream = (0, fs_1.createWriteStream)(local);
             readableStream.pipe(writeStream);
             writeStream.on('finish', () => {
-                writeStream._destroy; //dont wanna leave it open
-                Logger_js_1.default.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`);
+                //dont wanna leave it open
+                Logger_1.default.info(`Downloaded ${fileKey} from ${bucketName} to ${local}`);
             });
+            writeStream._destroy;
         }
         catch (error) {
-            Logger_js_1.default.error(`Error downloading ${fileKey} from ${bucketName} to ${local}:`, error);
+            Logger_1.default.error(`Error downloading ${fileKey} from ${bucketName} to ${local}:`, error);
         }
+        let localZip = local + ".zip";
+        zipFile(local, localZip);
     });
 }
 ;
