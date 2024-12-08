@@ -42,6 +42,8 @@ installPak('adm-zip');
 installPak('crypto');
 installPak('aws-sdk');
 installPak('mongoose');
-installPak('semver')
+installPak('semver');
+installPak('archiver');
+installPak('uuid')
 
 process.exit(0);

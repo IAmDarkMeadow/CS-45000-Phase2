@@ -18,49 +18,10 @@
  */
 
 
-
 import s3Client from '../config/aws-config.js';               // Importing configured AWS S3 client
 import { ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3'; // Import necessary AWS commands
-import { Request, Response } from 'express';                  // Importing Express Request and Response types
-import { uploadModuleMetadata } from '../services/s3Service'; // Importing functioni to upload metadata to S3
-import { validationResult } from 'express-validator';         // Importinig valiidationResult to validate incominig request
-import * as fs from 'fs';                                         // Importing file system module to read file streams
-
-// This is for when the metric code is done. 
-// import { calculateAndSaveMetrics } from '../utils/metrics';       // Importing function to calculate and store metrics
 
 
-// Controller function to create module metadata
-export const createMetaData = async (req: Request, res: Response) => {
-    //Extract metadate fiields from the request body
-  const { name, version, description, s3Location } = req.body;
-
-  // Validate request data 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    // If validation fails, return a 400 Bad Request response with the error details
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  // Create an object with the extracted metadata fields
-  const moduleData = {
-    name,          // Name of the module/package
-    version,       // Version of the module/package
-    description,   // Description of the module/package (optional)
-    s3Location,    // Location of the module/package in Amazon S3 (optional)
-  };
-
-  try {
-    // Upload metadata to S3
-    await uploadModuleMetadata(moduleData);
-
-    // Respond with a 201 Created status if upload is successful
-    res.status(201).json({ message: `Successfully uploaded metadata for ${name}` });
-  } catch (error) {
-    // If any error occurs during the upload, respond with a 500 Internal Server Error status
-    res.status(500).json({ error: `Error uploading metadata for ${name}:` });
-  }
-};
 
 // Function to search through metadata JSON for a given expression
 async function SearchJSON(metadata: any, expression: string) {
@@ -160,74 +121,3 @@ export function RegularExpressionSearch(regex: string) {
     const prefix = 'ModuleMetadata/';
     fetchAndProcessJsonObjectsConcurrently(bucketName, prefix, (jsonContent) => SearchJSON(jsonContent, regex));
 }
-
-export const uploadPackage = async (req: Request, res: Response) => {
-    return 0
-}
-
-// //
-// // The upload Function
-// // Will need updated once Debloat, and metrics are done 
-// // Need to create savePackageMetadata, uploadToS3, debloatPackage, calculateAndSaveMetrics Next time
-
-// export const uploadPackage = async (req: Request, res: Response) => {
-
-//     // Validate request data using express-validator
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-
-//       // If validation fails, return a 400 Bad Request response with the error details
-
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-  
-//     // Extract information from the request body and file
-//     const { name, version, debloat } = req.body;                  
-//     let fileKey = req.file?.key;                                    
-//     let filePath = req.file?.path;                                 
-  
-
-//     // Debloat features blow
-//     // If need to update Debloat 
-
-//     try {
-//       // If debloat is set to 'true' and the filePath is available, debloat the package
-//       if (debloat === 'true' && filePath) {
-//         // Debloat the package using the debloat service
-//         const debloatedFilePath = await debloatPackage(filePath);
-  
-//         // Re-upload the debloated package to S3
-//         const uploadParams = {
-//           Bucket: process.env.S3_BUCKET_NAME!,                      // Bucket name from environment variables
-//           Key: fileKey!,                                            // Key to identify the package in S3
-//           Body: fs.createReadStream(debloatedFilePath),             // Reading the debloated package file as a stream
-//         };
-//         await uploadToS3(uploadParams);                             // Upload the debloated package to S3
-//       }
-  
-//       // Save the package metadata to the database or other storage
-//       await savePackageMetadata({
-//         name,
-//         version,
-//         s3Key: fileKey!,                                            // Metadata includes the name, version, and S3 key of the package
-//       });
-  
-//       // Need updated when metric functions are working
-//       //
-//       // Calculate and store relevant metrics for the package
-//       // Perform the analysis on the uploaded package
-//       //
-//       //await calculateAndSaveMetrics(name, version);                
-//       //
-
-
-
-//       // Send a success response to the client
-//       res.status(201).json({ message: 'Package uploaded successfully' });
-//     } catch (error) {
-//       // If an error occurs, respond with a 500 Internal Server Error status and an error message
-//       res.status(500).json({ error: `Failed to upload package: ${error.message}` });
-//     }
-//   };
-
-

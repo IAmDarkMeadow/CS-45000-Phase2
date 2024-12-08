@@ -12,10 +12,10 @@
  * 
  */
 
-import logger from "../utils/Logger.js"; // For Error handling
-import s3Client from '../config/aws-config.js';
+import logger from "../utils/Logger"; // For Error handling
+import s3Client from '../config/aws-config';
 import { PutObjectCommand, GetObjectCommand, ListBucketsCommand } from '@aws-sdk/client-s3';
-import { createWriteStream } from 'fs';
+import { createWriteStream, createReadStream } from 'fs';
 import { Readable } from 'stream';
 import dotenv from 'dotenv'; // For protected enviroment Variables
 
@@ -66,6 +66,7 @@ export async function downloadFileS3(bucketName:string, fileKey:string, localPat
 
 import { ModuleMetadata } from '../models/packageModel.js';  // Importing the ModuleMetadata interfacce for type safety
 import { error } from "console";
+import path from "path";
 
 // Funtion to upload the module metadata to S3 as a JSON file
 
@@ -109,3 +110,34 @@ export async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Prom
         throw error;
     }
 };
+
+// Upload to S3 function
+
+export async function uploadToS3(filePath: string, bucketName: string, keyPrefix: string): Promise<string> {
+  // Create a readable stream from the file path
+  const fileStream = createReadStream(filePath);
+  const fs = await import('fs');
+  const fileContent = fs.readFileSync(filePath);
+  const fileName = path.basename(filePath);
+  const key = `${keyPrefix}/${fileName}`;
+
+
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Body: fileContent,
+  };
+
+  const command = new PutObjectCommand(params);
+
+  try {
+    await s3Client.send(command);
+    const s3Location = `s3://${bucketName}/Modules/${key}`;
+    logger.info(`File uploaded successfully to ${s3Location}`);
+    return s3Location;
+  } catch (error) {
+    logger.error(`Error uploading file to S3:`, error);
+    throw error;
+  }
+}
+ 

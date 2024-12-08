@@ -20,3 +20,7 @@
  * 
 */
 
+import { handleUpload } from "./services/uploadService";
+
+
+handleUpload("https://github.com/IAmDarkMeadow/CS45000-ECE46100",true)
