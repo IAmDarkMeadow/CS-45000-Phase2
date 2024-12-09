@@ -6,8 +6,6 @@
  * This file contains the functions that have connect to the S3 service.
  * This file contains the downloadFileS3 that Grayson created.
  * It also contains the uploadModuleMetadata that Jacob Esparza created.
- * It also containt the uploadToS3 which will upload the contents of the
- * zip file into the correct bucket name.
  *
  * Author: Grayson DeHerdt, Brayden Devenport, Jacob Esparza
  * Date: 12-02-2024
@@ -93,42 +91,34 @@ function downloadFileS3(bucketName, fileKey, localPath) {
     });
 }
 ;
-const console_1 = require("console");
 const path_1 = __importDefault(require("path"));
 // Funtion to upload the module metadata to S3 as a JSON file
 function uploadModuleMetadata(moduleMetadata) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Get the S3 bucket name from environment variables
         const bucketName = process.env.S3_BUCKET_NAME;
         if (!bucketName) {
-            // I do not know if this will work without the try/catch commands. 
-            Logger_1.default.error(`S3_BUCKET_NAME is not defined in the environment variables.`, console_1.error);
+            Logger_1.default.error(`S3_BUCKET_NAME is not defined in the environment variables.`);
+            throw new Error('S3_BUCKET_NAME is not defined'); // Ensure the function fails here
         }
-        // Create a metadata file name based on the module name and version
         const metadataFileName = `ModuleMetadata/${moduleMetadata.name}-${moduleMetadata.version}.json`;
-        // Convert the module metadata to JSON string
         const jsonMetadata = JSON.stringify(moduleMetadata, null, 2);
-        // Define the parameters for the S3 upload
         const params = {
-            Bucket: bucketName, // S3 bucket name
-            Key: metadataFileName, // S3 object key (filename)
-            Body: jsonMetadata, // Content of the file (JSON)
-            ContentType: 'application/json', // Specify content type as JSON
+            Bucket: bucketName,
+            Key: metadataFileName,
+            Body: jsonMetadata,
+            ContentType: 'application/json',
         };
-        // Create an S3 PutObjectCommand with the defined parameters
         const command = new client_s3_1.PutObjectCommand(params);
         try {
-            // Send the upload command to S3
             yield aws_config_1.default.send(command);
             Logger_1.default.info(`Successfully uploaded metadata for ${moduleMetadata.name} to S3!`);
         }
         catch (error) {
             Logger_1.default.error(`Error uploading metadata for ${moduleMetadata.name}:`, error);
-            throw error;
+            throw error; // rethrow so the promise rejects
         }
     });
 }
-;
 // Upload to S3 function
 function uploadToS3(filePath, bucketName, keyPrefix) {
     return __awaiter(this, void 0, void 0, function* () {

@@ -2,7 +2,6 @@
 import request from 'supertest';
 import app from '../src/app';
 import path from 'path';
-import { uploadToS3 } from '../src/services/s3Service';
 
 jest.mock('../services/s3Service', () => ({
   uploadToS3: jest.fn().mockResolvedValue(undefined),
