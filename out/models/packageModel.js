@@ -4,6 +4,7 @@
  *
  * Description:
  * This file contains the TypeScript interface for module metadata used in the master program.
+ * This file also contains a function that will zip a directory into a zip file.
  *
  * Author: Jacob Esparza, Brayden Devenport
  * Date: 12-02-2024
@@ -26,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.zipDirectory = void 0;
 const archiver_1 = __importDefault(require("archiver"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
+// zipDirectory will zip the contents in a directory in a zip file. 
 const zipDirectory = (sourceDir, outPath) => __awaiter(void 0, void 0, void 0, function* () {
     const archive = (0, archiver_1.default)('zip', { zlib: { level: 9 } });
     const stream = fs_extra_1.default.createWriteStream(outPath);

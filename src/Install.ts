@@ -29,7 +29,6 @@ installPak('express');
 installPak('express-validator');
 installPak('fs');
 installPak('path');
-installPak('adm-zip');
 installPak('dotenv');
 installPak('winston');
 installPak('node-ssh');
@@ -44,7 +43,12 @@ installPak('aws-sdk');
 installPak('mongoose');
 installPak('semver');
 installPak('archiver');
+<<<<<<< Updated upstream
 installPak('uuid')
 installPak('cors')
+=======
+installPak('uuid');
+installPak('@octokit/rest')
+>>>>>>> Stashed changes
 
 process.exit(0);
