@@ -1,3 +1,20 @@
+/*
+ *  UpdateDatabase.ts
+ *  Description: Intended to update the server's database per user request
+ *  by first comparing module version from the git version
+ *  then using external upload function.
+ *  input is json header object used to communicate file details within the server
+ *  Two functions are here that arent exported, extractRepoDetails and getLatestRelease
+ *  first extracts details from link for gitapi to use, and second
+ *  finds the latest release to compare to our version
+ *  Author: Grayson DeHerdt
+ *  Edit/Notes: Brayden Devenport
+ *  Date: 12-09-2024
+ *  Version: 0.5
+ *   
+ */
+
+
 import * as AWS from 'aws-sdk';
 import axios from 'axios';
 import {ModuleMetadata} from './models/packageModel'
@@ -7,6 +24,13 @@ import simpleGit from 'simple-git';
 import * as path from 'path';
 import * as fs from 'fs';
 import {handleUpload} from './services/uploadService'
+
+//Made by: Grayson DeHerdt
+//Function: Intended to update the server's database per user request
+//by first comparing module version from the git version
+//then using external upload function.
+//input is json header object used to communicate file details within the server
+
 
 // GitHub API base URL
 const GITHUB_API_URL = 'https://api.github.com';
