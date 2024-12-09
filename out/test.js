@@ -1,4 +1,17 @@
 "use strict";
+/*
+ * test.ts
+ *
+ *
+ * Description:
+ *  run test
+ *
+ * Author: Kameran parker
+ * Date: 12-08-2024
+ * Version: 1.0
+ *
+ *
+*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_s3_1 = require("@aws-sdk/client-s3");
 const Download_1 = require("./Download");

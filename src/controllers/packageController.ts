@@ -116,9 +116,63 @@ async function SearchJSON(metadata: any, expression: string) {
     }
 }
 
+export async function RegExJSON(metadata: any, expression: string) {
+    try {
+        // Create a regex from the expression
+        const regex = new RegExp(expression, 'i');  // 'i' for case-insensitive search
+        let matches: string[] = [];
+
+        // Recursive function to search through metadata
+        function search(obj: any) {
+            if (typeof obj === 'string' && regex.test(obj)) {
+                matches.push(obj);
+            } else if (typeof obj === 'object') {
+                for (const key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        search(obj[key]);
+                    }
+                }
+            }
+        }
+
+        // Start searching
+        search(metadata);
+
+        // Log matches found
+        if (matches.length > 0) {
+
+            return metadata;
+
+        } else {
+            return null;
+        }
+    } catch (error) {
+        logger.error('Error in RegExpSearch:', error);
+    }
+}
+
 // Function that processes metadata from each JSON object
 async function ListJSON(metadata: any) {
-    
+    logger.info('Object:' + metadata.toString());
+    if (!metadata || !metadata.name || !metadata.version || !metadata.s3location) {
+        logger.warn("Missing data in metadata:", metadata);
+        return ''; // Return empty string if metadata is incomplete
+    }
+        
+    logger.info('Object:' + metadata.toString());
+        
+    // Process the metadata
+    const HTML = `
+        <tr>
+        <td>${metadata.name}</td>
+        <td>${metadata.version}</td>
+        <td>${metadata.description}</td>
+        <td>${metadata.s3location}</td>
+        <td>${metadata.githublink}</td>
+        </tr>
+    `;
+        
+    return HTML;
 }
 
 // Function to fetch and process JSON objects concurrently from the S3 bucket
@@ -184,6 +238,14 @@ export function RegularExpressionSearch(regex: string) {
     const bucketName = 'registry-storage';
     const prefix = 'ModuleMetadata/';
     const toDeploy = fetchAndProcessJsonObjectsConcurrently(bucketName, prefix, (jsonContent) => SearchJSON(jsonContent, regex));
+    return toDeploy;
+}
+
+export function RegularExpressionSearchSingle(regex: string) {
+    logger.info('Starting RegExp Single Search');
+    const bucketName = 'registry-storage';
+    const prefix = 'ModuleMetadata/';
+    const toDeploy = fetchAndProcessJsonObjectsConcurrently(bucketName, prefix, (jsonContent) => RegExJSON(jsonContent, regex));
     return toDeploy;
 }
 

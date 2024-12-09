@@ -1,18 +1,4 @@
 "use strict";
-/*
- * debloatService.ts
- *
- *
- * Description:
- * This file provides a pre-configured logger instance using the `winston` library
- * for structured logging in your application. It supports logging to a file with
- * customizable options and uses environment variables to set the log file location.
- *
- * Author: Grayson DeHerdt
- * Date: 12-8-2024
- * Version: 1.0
- *
- */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -37,6 +23,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/*
+ * logger.ts
+ *
+ *
+ * Description:
+ * This file provides a pre-configured logger instance using the `winston` library
+ * for structured logging in your application. It supports logging to a file with
+ * customizable options and uses environment variables to set the log file location.
+ *
+ * Author: Jacob Esparza
+ * Date: 12-8-2024
+ * Version: 1.0
+ *
+ */
 const winston_1 = require("winston");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();

@@ -56,7 +56,7 @@ describe('handleUpload', () => {
 
     (fs.remove as jest.Mock).mockResolvedValue(undefined);
     (fs.pathExists as jest.Mock).mockResolvedValue(true);
-    (fs.readdir as jest.Mock).mockResolvedValue([zipFileName]);
+    //(fs.readdir as jest.Mock).mockResolvedValue([zipFileName]);
   });
 
   it('should handle successful upload without debloat', async () => {

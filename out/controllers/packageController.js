@@ -31,8 +31,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadPackage = exports.createMetaData = void 0;
+exports.RegExJSON = RegExJSON;
 exports.ListModules = ListModules;
 exports.RegularExpressionSearch = RegularExpressionSearch;
+exports.RegularExpressionSearchSingle = RegularExpressionSearchSingle;
 const aws_config_js_1 = __importDefault(require("../config/aws-config.js")); // Importing configured AWS S3 client
 const client_s3_1 = require("@aws-sdk/client-s3"); // Import necessary AWS commands
 const s3Service_1 = require("../services/s3Service"); // Importing functioni to upload metadata to S3
@@ -120,9 +122,60 @@ function SearchJSON(metadata, expression) {
         }
     });
 }
+function RegExJSON(metadata, expression) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Create a regex from the expression
+            const regex = new RegExp(expression, 'i'); // 'i' for case-insensitive search
+            let matches = [];
+            // Recursive function to search through metadata
+            function search(obj) {
+                if (typeof obj === 'string' && regex.test(obj)) {
+                    matches.push(obj);
+                }
+                else if (typeof obj === 'object') {
+                    for (const key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            search(obj[key]);
+                        }
+                    }
+                }
+            }
+            // Start searching
+            search(metadata);
+            // Log matches found
+            if (matches.length > 0) {
+                return metadata;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (error) {
+            Logger_1.default.error('Error in RegExpSearch:', error);
+        }
+    });
+}
 // Function that processes metadata from each JSON object
 function ListJSON(metadata) {
     return __awaiter(this, void 0, void 0, function* () {
+        Logger_1.default.info('Object:' + metadata.toString());
+        if (!metadata || !metadata.name || !metadata.version || !metadata.s3location) {
+            Logger_1.default.warn("Missing data in metadata:", metadata);
+            return ''; // Return empty string if metadata is incomplete
+        }
+        Logger_1.default.info('Object:' + metadata.toString());
+        // Process the metadata
+        const HTML = `
+        <tr>
+        <td>${metadata.name}</td>
+        <td>${metadata.version}</td>
+        <td>${metadata.description}</td>
+        <td>${metadata.s3location}</td>
+        <td>${metadata.githublink}</td>
+        </tr>
+    `;
+        return HTML;
     });
 }
 // Function to fetch and process JSON objects concurrently from the S3 bucket
@@ -185,59 +238,16 @@ function RegularExpressionSearch(regex) {
     const toDeploy = fetchAndProcessJsonObjectsConcurrently(bucketName, prefix, (jsonContent) => SearchJSON(jsonContent, regex));
     return toDeploy;
 }
+function RegularExpressionSearchSingle(regex) {
+    Logger_1.default.info('Starting RegExp Single Search');
+    const bucketName = 'registry-storage';
+    const prefix = 'ModuleMetadata/';
+    const toDeploy = fetchAndProcessJsonObjectsConcurrently(bucketName, prefix, (jsonContent) => RegExJSON(jsonContent, regex));
+    return toDeploy;
+}
 const uploadPackage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return 0;
 });
 exports.uploadPackage = uploadPackage;
 Logger_1.default.info('Results: ', RegularExpressionSearch('test'));
-// //
-// // The upload Function
-// // Will need updated once Debloat, and metrics are done 
-// // Need to create savePackageMetadata, uploadToS3, debloatPackage, calculateAndSaveMetrics Next time
-// export const uploadPackage = async (req: Request, res: Response) => {
-//     // Validate request data using express-validator
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       // If validation fails, return a 400 Bad Request response with the error details
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-//     // Extract information from the request body and file
-//     const { name, version, debloat } = req.body;                  
-//     let fileKey = req.file?.key;                                    
-//     let filePath = req.file?.path;                                 
-//     // Debloat features blow
-//     // If need to update Debloat 
-//     try {
-//       // If debloat is set to 'true' and the filePath is available, debloat the package
-//       if (debloat === 'true' && filePath) {
-//         // Debloat the package using the debloat service
-//         const debloatedFilePath = await debloatPackage(filePath);
-//         // Re-upload the debloated package to S3
-//         const uploadParams = {
-//           Bucket: process.env.S3_BUCKET_NAME!,                      // Bucket name from environment variables
-//           Key: fileKey!,                                            // Key to identify the package in S3
-//           Body: fs.createReadStream(debloatedFilePath),             // Reading the debloated package file as a stream
-//         };
-//         await uploadToS3(uploadParams);                             // Upload the debloated package to S3
-//       }
-//       // Save the package metadata to the database or other storage
-//       await savePackageMetadata({
-//         name,
-//         version,
-//         s3Key: fileKey!,                                            // Metadata includes the name, version, and S3 key of the package
-//       });
-//       // Need updated when metric functions are working
-//       //
-//       // Calculate and store relevant metrics for the package
-//       // Perform the analysis on the uploaded package
-//       //
-//       //await calculateAndSaveMetrics(name, version);                
-//       //
-//       // Send a success response to the client
-//       res.status(201).json({ message: 'Package uploaded successfully' });
-//     } catch (error) {
-//       // If an error occurs, respond with a 500 Internal Server Error status and an error message
-//       res.status(500).json({ error: `Failed to upload package: ${error.message}` });
-//     }
-//   };
 //# sourceMappingURL=packageController.js.map

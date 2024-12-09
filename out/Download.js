@@ -1,15 +1,4 @@
 "use strict";
-/*
- *  Download.ts
- *  Description: This is basically a guide to see where I put certian functions from this file
- *  so that if you. I did this to make the project modular and scalar so that it would be easier to decode.
- *
- *  Author: Grayson DeHerdt
- *  Edit/Notes: Brayden Devenport
- *  Date: 12-02-2024
- *  Version: 0.5
- *
- */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -24,37 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadFileS3 = downloadFileS3;
+/*
+ *  Download.ts
+ *  Description: Clientside download function to download modules from the server. The two functions
+ *  can be broken down as a download from S2 (using a s2client object, bucket name, client, and location
+ *   on client.
+ *  Second function Zips one location and moves it to another
+ *  Author: Grayson DeHerdt
+ *  Edit/Notes: Brayden Devenport
+ *  Date: 12-02-2024
+ *  Version: 0.5
+ *
+ */
 const Logger_1 = __importDefault(require("./utils/Logger"));
 var AdmZip = require("adm-zip");
-//idk how we are storing these yet
-//const remoteFilePath = '/path/to/remote/file';
-//const localFilePath = './downloaded-file';
-//export async function downloadFileEC2 (remoteFilePath:string, localFilePath:string) {
-//    const ssh = new NodeSSH();
-//    try {
-//        await ssh.connect({
-//            host,
-//            username,
-//            privateKey: privateKeyPath,
-//        });
-//
-//        const remoteFile = await ssh.getFile(localFilePath, remoteFilePath);
-//        console.log(`Downloaded ${remoteFilePath} to ${localFilePath}`);
-//    } catch (error) {
-//        console.error('Error downloading file:', error);
-//    } finally {
-//        ssh.dispose();
-//    }
-//};
 const client_s3_1 = require("@aws-sdk/client-s3");
 const fs_1 = require("fs");
-//const bucketName = 'your-bucket-name'; what the bucket is
-//const fileKey = 'your-file.txt'; the file name
-//const localPath = './your-file.txt'; where to send (can be ./ or full path)
-//const s3Client = new S3Client({ region: 'your-region' });
-//need to have a active S3Client unit set up like
-//const s3Client = new S3Client({ region: 'your-region' });
-//const s3client = new S3Client({region:'region', credentals: 'credentals'}) etc etc
 const zipFile = (downloadPath, zipPath) => {
     const zip = new AdmZip();
     zip.addLocalFile(downloadPath);
@@ -94,6 +68,4 @@ function downloadFileS3(s3Client, bucketName, fileKey, local) {
     });
 }
 ;
-//this runs on server
-//zips file found after locating through index
 //# sourceMappingURL=Download.js.map

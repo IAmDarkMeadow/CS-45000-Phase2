@@ -12,13 +12,16 @@
  */
 
 import { bool } from "aws-sdk/clients/signer";
-import { handleUpload } from "../services/uploadService";
+import { connectToGitHubAndDownloadRepo } from "../UpdateDatabase";
+import { RegularExpressionSearchSingle } from "../controllers/packageController";
 
 const userInput: string = process.argv[2]; // Get the user input from the command line argument
 
 if (userInput) {
-    const toReturn = handleUpload(userInput, true);
-    console.log(toReturn);
+    //Doesn't work currently
+    const toSend = RegularExpressionSearchSingle(userInput);
+    //const toReturn = connectToGitHubAndDownloadRepo(toSend);
+    console.log(toSend);
 } else {
     console.log("<p>No input provided.</p>");
 }
