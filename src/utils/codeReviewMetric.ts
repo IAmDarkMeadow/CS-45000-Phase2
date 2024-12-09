@@ -1,178 +1,417 @@
-// src/utils/codeReviewMetrics.ts
+// File: codeReviewMetric.ts
 
-import { Octokit } from '@octokit/rest';
-import path from 'path';
-import fs from 'fs-extra';
-import logger from './Logger';
-import { ModuleMetadata } from '../models/packageModel';
+import axios from 'axios';
+import dotenv from 'dotenv';
 
+dotenv.config();
 /**
- * Configuration for GitHub API access
+ * Configuration Interface
  */
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Ensure this is set in your environment variables
-
-if (!GITHUB_TOKEN) {
-  throw new Error('GITHUB_TOKEN is not defined in environment variables.');
+interface Config {
+    repoUrl: string; // GitHub repository URL
+    githubToken?: string; // Optional GitHub token for authenticated requests
 }
 
-const octokit = new Octokit({
-  auth: GITHUB_TOKEN,
-});
+// /**
+//  * Extract owner and repo name from GitHub URL
+//  * @param url GitHub repository URL
+//  * @returns { owner, repo }
+//  */
+// function parseGitHubUrl(url: string): { owner: string; repo: string } {
+//     const regex = /https?:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\.git)?(?:\/)?$/;
+//     const match = url.match(regex);
+//     if (!match) {
+//         throw new Error('Invalid GitHub repository URL.');
+//     }
+//     return { owner: match[1], repo: match[2] };
+// }
+
+// /**
+//  * Fetch all pull requests for the repository
+//  * @param owner Repository owner
+//  * @param repo Repository name
+//  * @param githubToken Optional GitHub token
+//  * @returns Array of pull requests
+//  */
+// async function fetchAllPullRequests(owner: string, repo: string, githubToken?: string): Promise<any[]> {
+//     const per_page = 100;
+//     let page = 1;
+//     let pullRequests: any[] = [];
+//     const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+//     if (githubToken) {
+//         headers['Authorization'] = `token ${githubToken}`;
+//     }
+
+//     while (true) {
+//         const url = `https://api.github.com/repos/${owner}/${repo}/pulls?state=closed&per_page=${per_page}&page=${page}`;
+//         try {
+//             const response = await axios.get(url, { headers });
+//             const data = response.data;
+//             if (data.length === 0) break;
+//             pullRequests = pullRequests.concat(data);
+//             if (data.length < per_page) break;
+//             page += 1;
+//         } catch (error: any) {
+//             throw new Error(`Failed to fetch pull requests: ${error.message}`);
+//         }
+//     }
+
+//     return pullRequests;
+// }
+
+// /**
+//  * Fetch reviews for a specific pull request
+//  * @param owner Repository owner
+//  * @param repo Repository name
+//  * @param pullNumber Pull request number
+//  * @param githubToken Optional GitHub token
+//  * @returns Array of reviews
+//  */
+// async function fetchPullRequestReviews(owner: string, repo: string, pullNumber: number, githubToken?: string): Promise<any[]> {
+//     const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+//     if (githubToken) {
+//         headers['Authorization'] = `token ${githubToken}`;
+//     }
+
+//     const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pullNumber}/reviews`;
+//     try {
+//         const response = await axios.get(url, { headers });
+//         return response.data;
+//     } catch (error: any) {
+//         throw new Error(`Failed to fetch reviews for PR #${pullNumber}: ${error.message}`);
+//     }
+// }
+
+// /**
+//  * Determine if a pull request has at least one approving review
+//  * @param reviews Array of reviews
+//  * @returns boolean
+//  */
+// function hasApprovingReview(reviews: any[]): boolean {
+//     return reviews.some(review => review.state === 'APPROVED');
+// }
+
+// /**
+//  * Fetch additions for a specific pull request
+//  * @param owner Repository owner
+//  * @param repo Repository name
+//  * @param pullNumber Pull request number
+//  * @param githubToken Optional GitHub token
+//  * @returns Number of additions
+//  */
+// async function fetchPullRequestAdditions(owner: string, repo: string, pullNumber: number, githubToken?: string): Promise<number> {
+//     const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+//     if (githubToken) {
+//         headers['Authorization'] = `token ${githubToken}`;
+//     }
+
+//     const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pullNumber}`;
+//     try {
+//         const response = await axios.get(url, { headers });
+//         return response.data.additions;
+//     } catch (error: any) {
+//         throw new Error(`Failed to fetch additions for PR #${pullNumber}: ${error.message}`);
+//     }
+// }
+
+// /**
+//  * Fetch total lines of code in the repository
+//  * This function fetches the repository's languages and sums up the bytes as a proxy for lines of code.
+//  * Note: This is an approximation.
+//  * @param owner Repository owner
+//  * @param repo Repository name
+//  * @param githubToken Optional GitHub token
+//  * @returns Total lines of code (approximated)
+//  */
+// async function fetchTotalLinesOfCode(owner: string, repo: string, githubToken?: string): Promise<number> {
+//     const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+//     if (githubToken) {
+//         headers['Authorization'] = `token ${githubToken}`;
+//     }
+
+//     const url = `https://api.github.com/repos/${owner}/${repo}/languages`;
+//     try {
+//         const response = await axios.get(url, { headers });
+//         const languages = response.data;
+//         let totalBytes = 0;
+//         for (const lang in languages) {
+//             totalBytes += languages[lang];
+//         }
+//         // Approximate lines of code by assuming 1 byte ≈ 1 character and average 50 characters per line
+//         return Math.round(totalBytes / 50);
+//     } catch (error: any) {
+//         throw new Error(`Failed to fetch languages: ${error.message}`);
+//     }
+// }
+
+// /**
+//  * Calculate the fraction of code introduced through PRs with code reviews
+//  * @param config Configuration object
+//  * @returns Fraction as a number between 0 and 1
+//  */
+// export async function computeCodeReviewMetric(config: Config): Promise<number> {
+//     const { owner, repo } = parseGitHubUrl(config.repoUrl);
+//     const pullRequests = await fetchAllPullRequests(owner, repo, config.githubToken);
+
+//     let reviewedAdditions = 0;
+
+//     // Process each pull request
+//     for (const pr of pullRequests) {
+//         const prNumber = pr.number;
+//         const reviews = await fetchPullRequestReviews(owner, repo, prNumber, config.githubToken);
+//         if (hasApprovingReview(reviews)) {
+//             const additions = await fetchPullRequestAdditions(owner, repo, prNumber, config.githubToken);
+//             reviewedAdditions += additions;
+//         }
+//     }
+
+//     const totalLines = await fetchTotalLinesOfCode(owner, repo, config.githubToken);
+
+//     if (totalLines === 0) {
+//         return 1.0; // If no code, return 1.0
+//     }
+
+//     // Ensure the fraction does not exceed 1 due to approximation
+//     return Math.min(reviewedAdditions / totalLines, 1.0);
+// }
+
+// /**
+//  * Example Usage
+//  * (Uncomment the following lines to test the metric)
+//  */
+
+function parseGitHubUrl(url: string): { owner: string; repo: string } {
+    console.log(`Parsing GitHub URL: ${url}`);
+    const regex = /https?:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\.git)?(?:\/)?$/;
+    const match = url.match(regex);
+    if (!match) {
+        throw new Error('Invalid GitHub repository URL.');
+    }
+    const owner = match[1];
+    const repo = match[2];
+    console.log(`Extracted Owner: ${owner}, Repository: ${repo}`);
+    return { owner, repo };
+}
 
 /**
- * Fetches all pull requests for a given repository.
- * 
- * @param owner - Repository owner
- * @param repo - Repository name
+ * Fetch all pull requests for the repository
+ * @param owner Repository owner
+ * @param repo Repository name
+ * @param githubToken Optional GitHub token
  * @returns Array of pull requests
  */
-const fetchAllPullRequests = async (owner: string, repo: string) => {
-  try {
-    const prs = await octokit.paginate(octokit.pulls.list, {
-      owner,
-      repo,
-      state: 'closed',
-      per_page: 100,
-    });
-    return prs;
-  } catch (error) {
-    logger.error(`Error fetching pull requests: ${error}`);
-    return [];
-  }
-};
+async function fetchAllPullRequests(owner: string, repo: string, githubToken?: string): Promise<any[]> {
+    console.log(`Fetching all closed pull requests for ${owner}/${repo}`);
+    const per_page = 100;
+    let page = 1;
+    let pullRequests: any[] = [];
+    const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+    if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+    }
+
+    while (true) {
+        const url = `https://api.github.com/repos/${owner}/${repo}/pulls?state=closed&per_page=${per_page}&page=${page}`;
+        console.log(`Fetching PRs from: ${url}`);
+        try {
+            const response = await axios.get(url, { headers });
+            const data = response.data;
+            console.log(`Fetched ${data.length} pull requests from page ${page}`);
+            if (data.length === 0) break;
+            pullRequests = pullRequests.concat(data);
+            if (data.length < per_page) break;
+            page += 1;
+        } catch (error: any) {
+            console.error(`Error fetching pull requests: ${error.message}`);
+            throw new Error(`Failed to fetch pull requests: ${error.message}`);
+        }
+    }
+
+    console.log(`Total pull requests fetched: ${pullRequests.length}`);
+    return pullRequests;
+}
 
 /**
- * Determines if a pull request has at least one approved review.
- * 
- * @param owner - Repository owner
- * @param repo - Repository name
- * @param pull_number - PR number
- * @returns Boolean indicating if PR has approved reviews
+ * Fetch reviews for a specific pull request
+ * @param owner Repository owner
+ * @param repo Repository name
+ * @param pullNumber Pull request number
+ * @param githubToken Optional GitHub token
+ * @returns Array of reviews
  */
-const hasApprovedReview = async (owner: string, repo: string, pull_number: number): Promise<boolean> => {
-  try {
-    const reviews = await octokit.paginate(octokit.pulls.listReviews, {
-      owner,
-      repo,
-      pull_number,
-      per_page: 100,
-    });
+async function fetchPullRequestReviews(owner: string, repo: string, pullNumber: number, githubToken?: string): Promise<any[]> {
+    console.log(`Fetching reviews for PR #${pullNumber}`);
+    const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+    if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+    }
 
-    // Check if any review has state 'APPROVED'
-    return reviews.some((review: { state: string; }) => review.state === 'APPROVED');
-  } catch (error) {
-    logger.error(`Error fetching reviews for PR #${pull_number}: ${error}`);
-    return false;
-  }
-};
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pullNumber}/reviews`;
+    try {
+        const response = await axios.get(url, { headers });
+        console.log(`Fetched ${response.data.length} reviews for PR #${pullNumber}`);
+        return response.data;
+    } catch (error: any) {
+        console.error(`Error fetching reviews for PR #${pullNumber}: ${error.message}`);
+        throw new Error(`Failed to fetch reviews for PR #${pullNumber}: ${error.message}`);
+    }
+}
 
 /**
- * Calculates the total lines of code from PRs with approved reviews.
- * 
- * @param owner - Repository owner
- * @param repo - Repository name
- * @param prs - Array of pull requests
- * @returns Total lines of code added from reviewed PRs
+ * Determine if a pull request has at least one approving review
+ * @param reviews Array of reviews
+ * @returns boolean
  */
-const calculateLOCFromReviewedPRs = async (owner: string, repo: string, prs: any[]): Promise<number> => {
-  let totalLOC = 0;
+function hasApprovingReview(reviews: any[]): boolean {
+    const hasApprove = reviews.some(review => review.state === 'APPROVED');
+    console.log(`PR has approving review: ${hasApprove}`);
+    return hasApprove;
+}
 
-  for (const pr of prs) {
-    const { number } = pr;
-    const approved = await hasApprovedReview(owner, repo, number);
+/**
+ * Fetch additions for a specific pull request
+ * @param owner Repository owner
+ * @param repo Repository name
+ * @param pullNumber Pull request number
+ * @param githubToken Optional GitHub token
+ * @returns Number of additions
+ */
+async function fetchPullRequestAdditions(owner: string, repo: string, pullNumber: number, githubToken?: string): Promise<number> {
+    console.log(`Fetching additions for PR #${pullNumber}`);
+    const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+    if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+    }
 
-    if (approved) {
-      try {
-        const prDetails = await octokit.pulls.get({
-          owner,
-          repo,
-          pull_number: number,
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pullNumber}`;
+    try {
+        const response = await axios.get(url, { headers });
+        const additions = response.data.additions;
+        console.log(`PR #${pullNumber} has ${additions} additions`);
+        return additions;
+    } catch (error: any) {
+        console.error(`Error fetching additions for PR #${pullNumber}: ${error.message}`);
+        throw new Error(`Failed to fetch additions for PR #${pullNumber}: ${error.message}`);
+    }
+}
+
+/**
+ * Fetch code frequency data for the repository
+ * This provides weekly additions and deletions.
+ * @param owner Repository owner
+ * @param repo Repository name
+ * @param githubToken Optional GitHub token
+ * @returns Total additions over the repository's history
+ */
+async function fetchCodeFrequency(owner: string, repo: string, githubToken?: string): Promise<number> {
+    console.log(`Fetching code frequency for ${owner}/${repo}`);
+    const headers: any = { 'Accept': 'application/vnd.github.v3+json' };
+    if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+    }
+
+    const url = `https://api.github.com/repos/${owner}/${repo}/stats/code_frequency`;
+    try {
+        let response;
+        // The GitHub API might take time to generate stats; handle 202 status
+        while (true) {
+            response = await axios.get(url, { headers });
+            if (response.status === 202) {
+                console.log('GitHub is generating the statistics. Waiting for 3 seconds before retrying...');
+                await new Promise(resolve => setTimeout(resolve, 3000));
+            } else {
+                break;
+            }
+        }
+        const data = response.data; // Array of [timestamp, additions, deletions]
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid data format received for code frequency.');
+        }
+        console.log(`Fetched code frequency data with ${data.length} entries.`);
+        let totalAdditions = 0;
+        data.forEach(([timestamp, additions, deletions]: [number, number, number]) => {
+            totalAdditions += additions;
         });
-
-        const additions = prDetails.data.additions || 0;
-        totalLOC += additions;
-      } catch (error) {
-        logger.error(`Error fetching details for PR #${number}: ${error}`);
-      }
+        console.log(`Total additions over the repository's history: ${totalAdditions}`);
+        return totalAdditions;
+    } catch (error: any) {
+        console.error(`Error fetching code frequency: ${error.message}`);
+        throw new Error(`Failed to fetch code frequency: ${error.message}`);
     }
-  }
-
-  return totalLOC;
-};
+}
 
 /**
- * Calculates the total lines of code in the repository's default branch.
- * 
- * @param owner - Repository owner
- * @param repo - Repository name
- * @returns Total lines of code
+ * Calculate the fraction of code introduced through PRs with code reviews
+ * @param config Configuration object
+ * @returns Fraction as a number between 0 and 1
  */
-const calculateTotalLOC = async (owner: string, repo: string): Promise<number> => {
-  try {
-    // Clone the repository locally to calculate LOC
-    const tempDir = path.join(process.env.TEMP_DIR || './temp', `${owner}-${repo}`);
-    await fs.ensureDir(tempDir);
+export async function computeCodeReviewMetric(config: Config): Promise<number> {
+    console.log('Starting computation of Code Review Metric...');
+    const { owner, repo } = parseGitHubUrl(config.repoUrl);
+    const pullRequests = await fetchAllPullRequests(owner, repo, config.githubToken);
 
-    // Clone the repository if not already cloned
-    const exists = await fs.pathExists(path.join(tempDir, '.git'));
-    if (!exists) {
-      logger.info(`Cloning repository ${owner}/${repo} to ${tempDir}`);
-      await cloneRepository(`https://github.com/${owner}/${repo}.git`, tempDir);
+    let reviewedAdditions = 0;
+
+    console.log('Processing each pull request for reviews and additions...');
+    // Process each pull request
+    for (const pr of pullRequests) {
+        const prNumber = pr.number;
+        console.log(`\nProcessing PR #${prNumber}: "${pr.title}" by ${pr.user.login}`);
+        const reviews = await fetchPullRequestReviews(owner, repo, prNumber, config.githubToken);
+        if (hasApprovingReview(reviews)) {
+            const additions = await fetchPullRequestAdditions(owner, repo, prNumber, config.githubToken);
+            reviewedAdditions += additions;
+            console.log(`Accumulated additions after PR #${prNumber}: ${reviewedAdditions}`);
+        } else {
+            console.log(`PR #${prNumber} does not have an approving review. Skipping additions.`);
+        }
     }
 
-    // Use a tool like cloc to calculate LOC
-    // Ensure cloc is installed on the system
-    const { execSync } = require('child_process');
-    const output = execSync(`cloc --json ${tempDir}`).toString();
-    const clocData = JSON.parse(output);
+    // Fetch total lines of code using Code Frequency API
+    const totalAdditions = await fetchCodeFrequency(owner, repo, config.githubToken);
 
-    // Sum up the LOC across all languages
-    let total = 0;
-    for (const [language, data] of Object.entries(clocData)) {
-      if (language === 'header' || language === 'SUM') continue;
-      total += (data as any).code;
+    if (totalAdditions === 0) {
+        console.log('Total additions are 0. Returning 1.0 as per specification.');
+        return 1.0; // If no code, return 1.0
     }
 
-    return total;
-  } catch (error) {
-    logger.error(`Error calculating total LOC: ${error}`);
-    return 0;
-  }
-};
+    // Ensure the fraction does not exceed 1 due to approximation
+    const fraction = Math.min(reviewedAdditions / totalAdditions, 1.0);
+    console.log(`\nFinal Computed Fraction: ${fraction}`);
+    return fraction;
+}
 
 /**
- * Clone repository function (reusing existing cloneRepository)
+ * Example Usage
+ * (Uncomment the following lines to test the metric)
  */
-import { cloneRepository } from './cloneRepo'; // Adjust the path as necessary
 
-/**
- * Calculates the fraction of code introduced through PRs with code reviews.
- * 
- * @param moduleMetadata - Metadata of the module
- * @param packagePath - Local path to the package (cloned repository)
- * @returns The fraction as a number between 0 and 1
- */
-export const calculateCodeReviewFraction = async (owner : string, repo : string , packagePath: string): Promise<number> => {
-  try {
+(async () => {
+    const config: Config = {
+        repoUrl: 'https://github.com/octocat/Hello-World', // Replace with your repository URL
+        githubToken: process.env.GITHUB_TOKEN, // Ensure you have GITHUB_TOKEN in your .env file
+    };
 
-    if (!owner || !repo) {
-      logger.warn('Module metadata lacks owner or repo information.');
-      return 0;
+    console.log('Starting Code Review Metric computation...');
+    try {
+        const fraction = await computeCodeReviewMetric(config);
+        console.log(`\nFraction of code introduced through PRs with code reviews: ${fraction}`);
+    } catch (error) {
+        console.error(`Error computing Code Review Metric: ${(error as Error).message}`);
     }
+})();
 
-    const prs = await fetchAllPullRequests(owner, repo);
-    const locReviewed = await calculateLOCFromReviewedPRs(owner, repo, prs);
-    const totalLOC = await calculateTotalLOC(owner, repo);
 
-    if (totalLOC === 0) {
-      logger.warn('Total LOC is zero. Cannot calculate fraction.');
-      return 0;
-    }
-
-    const fraction = locReviewed / totalLOC;
-    return parseFloat(fraction.toFixed(2)); // Rounded to two decimal places
-  } catch (error) {
-    logger.error(`Error calculating code review fraction: ${error}`);
-    return 0; // In case of error, assume worst case
-  }
-};
+    // (async () => {
+    //     const config: Config = {
+    //         repoUrl: 'https://github.com/IAmDarkMeadow/CS45000-ECE46100', // Replace with your repository URL
+    //         githubToken: process.env.GITHUB_TOKEN, // Optional: Replace with your GitHub token
+    //     };
+    
+    //     try {
+    //         const fraction = await computeCodeReviewMetric(config);
+    //         console.log(`Fraction of code introduced through PRs with code reviews: ${fraction}`);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // })();
