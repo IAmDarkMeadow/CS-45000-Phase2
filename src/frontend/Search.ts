@@ -1,4 +1,4 @@
-import { RegularExpressionSearch } from "./controllers/packageController";
+import { RegularExpressionSearch } from "../controllers/packageController";
 
 const userInput: string = process.argv[2]; // Get the user input from the command line argument
 
