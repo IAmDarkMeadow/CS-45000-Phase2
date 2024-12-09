@@ -2,6 +2,7 @@
  * debloatService.ts
  *
  * 
+ * 
  * Description:
  * This module provides functionality to "debloat" a directory by removing
  * unnecessary or excluded files and directories and minifying JavaScript files
