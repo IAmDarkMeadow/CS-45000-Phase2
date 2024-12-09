@@ -21,7 +21,7 @@
 import { NodeSSH } from 'node-ssh';
 import * as fs from 'fs';
 
-import logger from "./Logger";
+import logger from "./utils/Logger";
 var AdmZip = require("adm-zip");
 //idk how we are storing these yet
 //const remoteFilePath = '/path/to/remote/file';

@@ -29,7 +29,6 @@ installPak('express');
 installPak('express-validator');
 installPak('fs');
 installPak('path');
-installPak('adm-zip');
 installPak('dotenv');
 installPak('winston');
 installPak('node-ssh');
@@ -45,5 +44,7 @@ installPak('mongoose');
 installPak('semver');
 installPak('archiver');
 installPak('uuid')
+installPak('cors')
+installPak('@octokit/rest')
 
 process.exit(0);

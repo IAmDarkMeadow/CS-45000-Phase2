@@ -1,0 +1,56 @@
+#to run 'GithubDataFetcherTest.ts', use: 'npm run start:GithubDataFetcherTest'
+#also, create a .env file and add the following: GITHUB_TOKEN = YOUR_TOKEN (do not put "" string marks for YOUR_TOKEN)
+
+fetchCommits:
+    totalCommits: number
+    recentCommits:
+        - message: string
+          date: string  #ISO date format
+          changes: number
+    averageChangesPerCommit: number  #example: 12.34
+
+fetchContributors:
+    totalMentionableUsers: number
+    totalActualContributors: number
+    averageContributions: number  #example: 3.14
+    top5Contributors:
+        - login: string
+          contributions: number
+    contributionDistribution:
+        singleContribution: number
+        twoToFiveContributions: number
+        sixToTenContributions: number
+        moreThanTenContributions: number
+
+fetchTestingResults:
+    openBugs: number
+    openPullRequests: number
+    daysSinceLastRelease: number | null
+    stars: number
+    forks: number
+    watchers: number
+    contributors: number
+
+fetchDocumentation: string  #contents of the README file or 'No README file found.'
+
+fetchMaintainerMetrics:
+    commitsLastMonth: number
+    avgCommitsPerMonth: number  #example: 0.83
+    totalCommits: number
+    openIssues: number
+    closedIssues: number
+    totalReleases: number
+    releasesLastYear: number
+
+fetchLicense:
+    name: string
+    spdxId: string #software package data exchange
+    url: string
+
+fetchAllData:
+    commits: object  #structure from fetchCommits
+    contributors: object  #structure from fetchContributors
+    maintainerMetrics: object  #structure from fetchMaintainerMetrics
+    license: object  #structure from fetchLicense
+    documentation: string  #contents of the README file or 'No README file found.'
+    testingResults: object  #structure from fetchTestingResults

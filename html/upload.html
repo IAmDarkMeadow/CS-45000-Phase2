@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trustworthy Module Registry</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+	<!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Upload</a>
+        <a href="update.html">Update</a>
+        <a href="rate.html">Rate a Module</a>
+		<a href="search.html">Search Registry</a>
+		<a href="view.html">View Registry</a>
+    </div>
+	
+	<!-- Page Content -->
+    <div class="content">
+        <h1>Upload to Registry</h1>
+        <form>
+            <input type="text" id="userInput" placeholder="Enter a npm/github link" required>
+            <button type="button" id="Button">Upload</button>
+        </form>
+        <p id="results"></p>
+    </div>
+    <script>
+        document.getElementById('Button').addEventListener('click', function(event) {
+        event.preventDefault();  // Prevent form submission
+        
+        const userInput = document.getElementById('userInput').value;
+
+        fetch('http://localhost:5000/upload', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userInput: userInput })
+        })
+        .then(response => response.text())
+        .then(html => {
+            const resultsTbody = document.getElementById('results');
+            resultsTbody.innerHTML = '';
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const resultRows = tempDiv.querySelectorAll('p');
+            resultRows.forEach(row => {
+                resultsTbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+</body>
+</html>
