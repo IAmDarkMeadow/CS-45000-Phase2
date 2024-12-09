@@ -7,7 +7,6 @@ import simpleGit from 'simple-git';
 import * as path from 'path';
 import * as fs from 'fs';
 import {handleUpload} from './services/uploadService'
-import {ModuleMetadata} from './models/packageModel'
 
 // GitHub API base URL
 const GITHUB_API_URL = 'https://api.github.com';

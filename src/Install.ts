@@ -43,12 +43,8 @@ installPak('aws-sdk');
 installPak('mongoose');
 installPak('semver');
 installPak('archiver');
-<<<<<<< Updated upstream
 installPak('uuid')
 installPak('cors')
-=======
-installPak('uuid');
 installPak('@octokit/rest')
->>>>>>> Stashed changes
 
 process.exit(0);

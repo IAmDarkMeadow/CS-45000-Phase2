@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import cors from 'cors';
 import { exec } from 'child_process';
+import logger from './utils/Logger';
 
 const app = express();
 const port = 5000;
@@ -23,6 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Route to handle the form submission
 app.post('/search', (req: Request, res: Response) => {
     const userInput = req.body.userInput;
+
+    logger.info('Received user input:', userInput);
 
     // Run Search.js file (assuming Search.js is in the same directory as server.ts)
     exec(`node out/Search.js "${userInput}"`, (error, stdout, stderr) => {

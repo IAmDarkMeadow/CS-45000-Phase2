@@ -191,6 +191,8 @@ export const uploadPackage = async (req: Request, res: Response) => {
     return 0
 }
 
+logger.info('Results: ', RegularExpressionSearch('test'));
+
 // //
 // // The upload Function
 // // Will need updated once Debloat, and metrics are done 

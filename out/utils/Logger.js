@@ -8,7 +8,7 @@
  * for structured logging in your application. It supports logging to a file with
  * customizable options and uses environment variables to set the log file location.
  *
- * Author: Graysie DeHerdt
+ * Author: Grayson DeHerdt
  * Date: 12-8-2024
  * Version: 1.0
  *
