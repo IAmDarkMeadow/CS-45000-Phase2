@@ -4,6 +4,13 @@
  * Place Holder file
  * 
  * 
+ * Description:
+ * This module provides functionality to "debloat" a directory by removing
+ * unnecessary or excluded files and directories and minifying JavaScript files
+ * for optimized storage and performance. It is designed to work recursively
+ * through a directory structure, ensuring all nested files and folders are
+ * processed.
+ * 
  * 
  * 
  * 
