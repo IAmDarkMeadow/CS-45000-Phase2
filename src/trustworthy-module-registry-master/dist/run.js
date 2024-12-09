@@ -1,5 +1,6 @@
 #!/usr/bin/env ts-node
 "use strict";
+
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -23,7 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.calculateMetrics = calculateMetrics;
 const child_process_1 = require("child_process");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
@@ -31,9 +36,13 @@ const URLHandler_1 = require("./URLHandler/URLHandler");
 const GitHubDataFetcher_1 = require("./Data_Fetcher/GitHubDataFetcher");
 const NPMDataFetcher_1 = require("./Data_Fetcher/NPMDataFetcher");
 const CalculatorFactory_1 = require("./metrics/CalculatorFactory");
+// The new metrics for phase 2 imported below
+const codeReviewMetric_1 = require("./metrics/codeReviewMetric");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 // Define the expected command-line arguments
 const args = process.argv.slice(2);
-// export GITHUB_TOKEN=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
+
 if (args.length === 0) {
     console.error('Error: No command provided. Use "install", "test", or provide a URL file.');
     process.exit(1);
@@ -154,6 +163,10 @@ async function calculateMetrics(url) {
     if (!strategy) {
         throw new Error('Data fetcher strategy is not set.');
     }
+    const config = {
+        repoUrl: url,
+        githubToken: process.env.GITHUB_TOKEN
+    };
     const metrics = {
         URL: url,
     };
@@ -197,12 +210,27 @@ async function calculateMetrics(url) {
     const responsiveMaintainerLatency = Number(((Date.now() - responsiveMaintainerStart) / 1000).toFixed(3));
     metrics.ResponsiveMaintainer = responsiveMaintainerScore;
     metrics.ResponsiveMaintainer_Latency = responsiveMaintainerLatency;
+    // New Metric 1 Dependencyy Pinnning Metric
+    // const DependencyPinningMetricStart = Date.now();
+    // const DependencyPinningMetric = await computeDependencyPinningMetric(config)
+    // const DependencyPinningMetricLatency = Number(((Date.now() - DependencyPinningMetricStart) / 1000).toFixed(3));
+    // metrics.DependencyPinningMetric = DependencyPinningMetric;
+    // metrics.DependencyPinningMetric_Latency = DependencyPinningMetricLatency
+    // New metric 2 Code review Metric
+    const CodeReviewMetricStart = Date.now();
+    const CodeReviewMetric = await (0, codeReviewMetric_1.computeCodeReviewMetric)(config);
+    const CodeReviewMetricLatency = Number(((Date.now() - CodeReviewMetricStart) / 1000).toFixed(3));
+    metrics.CodeReviewMetric = CodeReviewMetric;
+    metrics.CodeReviewMetric_Latency = CodeReviewMetricLatency;
     // Calculate NetScore
-    const netScore = Number(((licenseScore * 0.5) +
+    const netScore = Number(((licenseScore * 0.4) +
         (busFactorScore * 0.1) +
-        (correctnessScore * 0.15) +
-        (rampUpScore * 0.15) +
-        (responsiveMaintainerScore * 0.1)).toFixed(2));
+        (correctnessScore * 0.1) +
+        (rampUpScore * 0.1) +
+        (responsiveMaintainerScore * 0.1) +
+        (CodeReviewMetric * 0.1)
+    // (DependencyPinningMetric * 0.1)
+    ).toFixed(2));
     const totalLatency = Number(((Date.now() - startTime) / 1000).toFixed(3));
     metrics.NetScore = netScore;
     metrics.NetScore_Latency = totalLatency;
