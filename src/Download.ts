@@ -1,8 +1,9 @@
 /*
  *  Download.ts
- *  Description: This is basically a guide to see where I put certian functions from this file
- *  so that if you. I did this to make the project modular and scalar so that it would be easier to decode.
- * 
+ *  Description: Clientside download function to download modules from the server. The two functions 
+ *  can be broken down as a download from S2 (using a s2client object, bucket name, client, and location
+ *   on client.
+ *  Second function Zips one location and moves it to another
  *  Author: Grayson DeHerdt
  *  Edit/Notes: Brayden Devenport
  *  Date: 12-02-2024
