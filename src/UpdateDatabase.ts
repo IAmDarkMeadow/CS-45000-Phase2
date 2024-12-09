@@ -8,6 +8,13 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {handleUpload} from './services/uploadService'
 
+//Made by: Grayson DeHerdt
+//Function: Intended to update the server's database per user request
+//by first comparing module version from the git version
+//then using external upload function.
+//input is json header object used to communicate file details within the server
+
+
 // GitHub API base URL
 const GITHUB_API_URL = 'https://api.github.com';
 
