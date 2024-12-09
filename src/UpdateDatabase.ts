@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import axios from 'axios';
+import {ModuleMetadata} from './models/packageModel'
 
 // GitHub API base URL
 import simpleGit from 'simple-git';
