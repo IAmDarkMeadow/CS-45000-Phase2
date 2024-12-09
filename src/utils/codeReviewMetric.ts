@@ -1,4 +1,14 @@
-// File: codeReviewMetric.ts
+/*
+* codeReviewMetric.ts*
+* Description:
+* This module provides functions to calculate the fraction of code introduced
+* through pull requests (PRs) that have undergone code reviews with at least
+* one approving review. It integrates with the GitHub API to fetch repository
+* data and analyze PRs.**
+* Author: Brayden Devenport
+* Date: 12-08-2024
+* Version: 1.0**
+*/
 
 import axios from 'axios';
 import dotenv from 'dotenv';

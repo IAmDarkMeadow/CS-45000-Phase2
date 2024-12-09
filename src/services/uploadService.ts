@@ -1,3 +1,15 @@
+/*
+* uploadService.ts
+*
+* Description:
+* This file provides the functionality to handle the complete upload workflow for a GitHub repository.
+* The process involves validating the URL, cloning the repository, optionally debloating it, packaging it
+* as a ZIP file, uploading it to an S3 bucket, and storing the metadata.
+* Author: Brayden Devenport
+* Date: 12-8-2024
+* Version: 1.0
+*/
+
 import { ProcessURL } from '../utils/verifyURL';
 import { cloneRepository } from '../utils/cloneRepo';
 import { zipDirectory } from '../models/packageModel';
