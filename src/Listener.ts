@@ -39,6 +39,23 @@ app.post('/search', (req: Request, res: Response) => {
     });
 });
 
+app.post('/rate', (req: Request, res: Response) => {
+    const userInput = req.body.userInput;
+
+    logger.info('Received user input:', userInput);
+
+    // Run Search.js file (assuming Search.js is in the same directory as server.ts)
+    exec(`node out/Rate.js "${userInput}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
+            return res.status(500).send('Something went wrong');
+        }
+        
+        // Send the generated HTML back to the client
+        res.send(stdout); // Assuming stdout is HTML
+    });
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

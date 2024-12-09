@@ -19,19 +19,23 @@
 	
 	<!-- Page Content -->
     <div class="content">
-        <h1>Search Directory</h1>
+        <h1>Rank Module</h1>
         <form id="searchForm">
-            <input type="text" id="userInput" placeholder="Enter search query" required>
-            <button type="button" id="searchButton">Search</button>
+            <input type="text" id="userInput" placeholder="Enter a NPM or GitHub link" required>
+            <button type="button" id="searchButton">Rank</button>
         </form>
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Version</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>GitHubLink</th>
+                    <th>Link</th>
+                    <th>License</th>
+                    <th>Bus Factor</th>
+                    <th>Correctness</th>
+                    <th>Ramp Up</th>
+                    <th>Responsive Maintainer</th>
+                    <th>Fraction of Dependencies</th>
+                    <th>Fraction of Reviewed Code</th>
+                    <th>Net Score</th>
                 </tr>
             </thead>
             <tbody id="results">
@@ -46,7 +50,7 @@
         const userInput = document.getElementById('userInput').value;
         console.log('Search Input:', userInput);
 
-        fetch('http://localhost:5000/search', {
+        fetch('http://localhost:5000/rank', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +72,6 @@
         })
         .catch(error => console.error('Error:', error));
     });
-
     </script>
 </body>
 </html>

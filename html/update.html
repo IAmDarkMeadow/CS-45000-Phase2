@@ -19,34 +19,20 @@
 	
 	<!-- Page Content -->
     <div class="content">
-        <h1>Search Directory</h1>
-        <form id="searchForm">
-            <input type="text" id="userInput" placeholder="Enter search query" required>
-            <button type="button" id="searchButton">Search</button>
+        <h1>Update a Module</h1>
+        <form>
+            <input type="text" id="userInput" placeholder="Enter the npm/github link to update" required>
+            <button type="button" id="Button">Update</button>
         </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Version</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>GitHubLink</th>
-                </tr>
-            </thead>
-            <tbody id="results">
-                <!-- Rows will be populated by TypeScript -->
-            </tbody>
-        </table>
+        <p id="results"></p>
     </div>
     <script>
-        document.getElementById('searchButton').addEventListener('click', function(event) {
+        document.getElementById('Button').addEventListener('click', function(event) {
         event.preventDefault();  // Prevent form submission
         
         const userInput = document.getElementById('userInput').value;
-        console.log('Search Input:', userInput);
 
-        fetch('http://localhost:5000/search', {
+        fetch('http://localhost:5000/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,14 +47,13 @@
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
 
-            const resultRows = tempDiv.querySelectorAll('tr');
+            const resultRows = tempDiv.querySelectorAll('p');
             resultRows.forEach(row => {
                 resultsTbody.appendChild(row);
             });
         })
         .catch(error => console.error('Error:', error));
     });
-
     </script>
 </body>
 </html>

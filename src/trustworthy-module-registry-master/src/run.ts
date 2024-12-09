@@ -104,7 +104,7 @@ async function processURLs(urlFile: string) {
  * @param url The URL to process.
  * @returns An object containing the URL and calculated metrics.
  */
-async function calculateMetrics(url: string): Promise<any> {
+export async function calculateMetrics(url: string): Promise<any> {
     const startTime = Date.now();
     const urlHandler = new URLHandler(); // Initialize without a strategy
 
