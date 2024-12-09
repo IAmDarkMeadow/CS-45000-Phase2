@@ -1,3 +1,16 @@
+/*
+ * Rate.ts
+ *
+ * 
+ * Description:
+ * This file runs the handleUpload function, which will upload a file to the s3 service, and debloat it.
+ * 
+ * Author: Jacob Esparza
+ * Date: 12-8-2024
+ * Version: 1.0
+ * 
+ */
+
 import { bool } from "aws-sdk/clients/signer";
 import { handleUpload } from "../services/uploadService";
 

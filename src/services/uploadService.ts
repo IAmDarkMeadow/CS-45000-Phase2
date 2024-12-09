@@ -1,5 +1,3 @@
-// src/services/uploadService.ts
-
 import { ProcessURL } from '../utils/verifyURL';
 import { cloneRepository } from '../utils/cloneRepo';
 import { zipDirectory } from '../models/packageModel';
@@ -10,6 +8,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid'
 import { debloatModule } from './debloatService';
+import logger from '../utils/Logger.js';
 
 dotenv.config();
 
@@ -32,7 +31,7 @@ export const handleUpload = async (githubUrl: string, debloat: boolean): Promise
 try{
     // Step 3: debloat
     if (debloat ){
-      console.log('Debloating the module...');
+      logger.info('Debloating the module...');
       await debloatModule(clonePath);
     }
     // Step 4: Package Module

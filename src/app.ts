@@ -1,17 +1,10 @@
 /*
- *
  * app.ts
  *  Just an outline
  *  PLace Holder
  * 
  * Description:
  *  Bring everything together
- * 
- * 
- * 
- * 
- * 
- * 
  * 
  * Author: Brayden Devenport
  * Date: 12-02-2024
@@ -23,5 +16,7 @@
 import { handleUpload } from "./services/uploadService";
 
 
+export function testUpload(){
+    handleUpload("https://github.com/IAmDarkMeadow/CS45000-ECE46100",true)
+}
 
-handleUpload("https://github.com/IAmDarkMeadow/CS45000-ECE46100",true)

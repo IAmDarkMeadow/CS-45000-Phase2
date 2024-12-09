@@ -10,58 +10,12 @@
  *  Version: 0.5
  *   
  */
-
-
-
-
-//Basic download script, needs true source and download location
-//this runs on the client
-//EC2
-
-
-import { NodeSSH } from 'node-ssh';
-import * as fs from 'fs';
-
 import logger from "./utils/Logger";
 var AdmZip = require("adm-zip");
-//idk how we are storing these yet
-//const remoteFilePath = '/path/to/remote/file';
-//const localFilePath = './downloaded-file';
-
-//export async function downloadFileEC2 (remoteFilePath:string, localFilePath:string) {
-//    const ssh = new NodeSSH();
-//    try {
-//        await ssh.connect({
-//            host,
-//            username,
-//            privateKey: privateKeyPath,
-//        });
-//
-//        const remoteFile = await ssh.getFile(localFilePath, remoteFilePath);
-//        console.log(`Downloaded ${remoteFilePath} to ${localFilePath}`);
-//    } catch (error) {
-//        console.error('Error downloading file:', error);
-//    } finally {
-//        ssh.dispose();
-//    }
-//};
-
-
-
 
 import { S3Client, GetObjectCommand, ListBucketsCommand } from '@aws-sdk/client-s3';
 import { createWriteStream } from 'fs';
 import { Readable } from 'stream';
-
-//const bucketName = 'your-bucket-name'; what the bucket is
-//const fileKey = 'your-file.txt'; the file name
-//const localPath = './your-file.txt'; where to send (can be ./ or full path)
-//const s3Client = new S3Client({ region: 'your-region' });
-
-
-//need to have a active S3Client unit set up like
-//const s3Client = new S3Client({ region: 'your-region' });
-//const s3client = new S3Client({region:'region', credentals: 'credentals'}) etc etc
 
 const zipFile = (downloadPath:string, zipPath:string) => {
   const zip = new AdmZip();
@@ -101,11 +55,3 @@ export async function downloadFileS3(s3Client: {send: (arg0: any) => any; }, buc
     let localZip = local + ".zip";
     zipFile(local, localZip);
 };
-
-
-
-
-//this runs on server
-//zips file found after locating through index
-
-

@@ -99,7 +99,6 @@ export async function uploadModuleMetadata(moduleMetadata: ModuleMetadata): Prom
   }
 }
 
-
 // Upload to S3 function
 
 export async function uploadToS3(filePath: string, bucketName: string, keyPrefix: string): Promise<string> {

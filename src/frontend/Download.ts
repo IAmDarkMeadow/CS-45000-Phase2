@@ -1,9 +1,9 @@
 /*
- * Search.ts
+ * Download.ts
  *
  * 
  * Description:
- * This file runs the Reg Exp Search function, then returns the output to the log to out converted to HTML.
+ * This file runs the handleUpload function, which will upload a file to the s3 service, and debloat it.
  * 
  * Author: Jacob Esparza
  * Date: 12-8-2024
@@ -11,12 +11,13 @@
  * 
  */
 
-import { RegularExpressionSearch } from "../controllers/packageController";
+import { bool } from "aws-sdk/clients/signer";
+import { handleUpload } from "../services/uploadService";
 
 const userInput: string = process.argv[2]; // Get the user input from the command line argument
 
 if (userInput) {
-    const toReturn = RegularExpressionSearch(userInput);
+    const toReturn = handleUpload(userInput, true);
     console.log(toReturn);
 } else {
     console.log("<p>No input provided.</p>");

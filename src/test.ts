@@ -1,3 +1,17 @@
+/*
+ * test.ts
+ *  
+ * 
+ * Description:
+ *  run test
+ * 
+ * Author: Kameran parker
+ * Date: 12-08-2024
+ * Version: 1.0
+ * 
+ * 
+*/
+
 import { S3Client, GetObjectCommand,ListBucketsCommand  } from '@aws-sdk/client-s3';
 import {fromEnv} from '@aws-sdk/credential-provider-env'
 import {downloadFileS3} from './Download'
