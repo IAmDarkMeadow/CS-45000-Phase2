@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This script acts as an entry point to your application.
+
+# Get the directory of the script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Navigate to the src directory
+cd "$SCRIPT_DIR/src"
+
+# Execute the run.ts script with the provided arguments
+npx ts-node run.ts "$@"
