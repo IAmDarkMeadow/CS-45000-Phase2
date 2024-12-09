@@ -1,5 +1,6 @@
 #!/usr/bin/env ts-node
 
+
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -9,9 +10,16 @@ import { GitHubDataFetcher } from './Data_Fetcher/GitHubDataFetcher';
 import { NPMDataFetcher } from './Data_Fetcher/NPMDataFetcher';
 import { CalculatorFactory, CalculatorTypes } from './metrics/CalculatorFactory';
 
+// The new metrics for phase 2 imported below
+import { computeCodeReviewMetric, Config } from './metrics/codeReviewMetric';
+import { computeDependencyPinningMetric } from './metrics/dependencyPinningMetric';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 // Define the expected command-line arguments
 const args = process.argv.slice(2);
-// export GITHUB_TOKEN=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
+
 if (args.length === 0) {
     console.error('Error: No command provided. Use "install", "test", or provide a URL file.');
     process.exit(1);
@@ -154,9 +162,19 @@ export async function calculateMetrics(url: string): Promise<any> {
         RampUp_Latency?: number;
         ResponsiveMaintainer?: number;
         ResponsiveMaintainer_Latency?: number;
+       DependencyPinningMetric?: number;
+       DependencyPinningMetric_Latency?: number;
+       CodeReviewMetric?: number;
+       CodeReviewMetric_Latency?: number;
         NetScore?: number;
         NetScore_Latency?: number;
     }
+
+   const config : Config = {
+       repoUrl: url,
+       githubToken: process.env.GITHUB_TOKEN
+   }
+
 
     const metrics: Metrics = {
         URL: url,
@@ -207,13 +225,29 @@ export async function calculateMetrics(url: string): Promise<any> {
     metrics.ResponsiveMaintainer = responsiveMaintainerScore;
     metrics.ResponsiveMaintainer_Latency = responsiveMaintainerLatency;
 
+    // New Metric 1 Dependencyy Pinnning Metric
+    const DependencyPinningMetricStart = Date.now();
+    const DependencyPinningMetric = await computeDependencyPinningMetric(config)
+    const DependencyPinningMetricLatency = Number(((Date.now() - DependencyPinningMetricStart) / 1000).toFixed(3));
+    metrics.DependencyPinningMetric = DependencyPinningMetric;
+    metrics.DependencyPinningMetric_Latency = DependencyPinningMetricLatency
+
+    // New metric 2 Code review Metric
+    const CodeReviewMetricStart = Date.now();
+    const CodeReviewMetric = await  computeCodeReviewMetric(config);
+    const CodeReviewMetricLatency = Number(((Date.now() - CodeReviewMetricStart) / 1000).toFixed(3));
+    metrics.CodeReviewMetric = CodeReviewMetric;
+    metrics.CodeReviewMetric_Latency = CodeReviewMetricLatency;
+
     // Calculate NetScore
     const netScore = Number((
-        (licenseScore * 0.5) +
+        (licenseScore * 0.4) +
         (busFactorScore * 0.1) +
-        (correctnessScore * 0.15) +
-        (rampUpScore * 0.15) +
-        (responsiveMaintainerScore * 0.1)
+        (correctnessScore * 0.1) +
+        (rampUpScore * 0.1) +
+        (responsiveMaintainerScore * 0.1) +
+        (CodeReviewMetric * 0.1) +
+        (DependencyPinningMetric * 0.1)
     ).toFixed(2));
     const totalLatency = Number(((Date.now() - startTime) / 1000).toFixed(3));
 

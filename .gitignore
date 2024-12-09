@@ -2,9 +2,9 @@
 node_modules/
 
 # Compiled JavaScript files
-# out/
-# build/
-# coverage/
+out/
+build/
+coverage/
 
 # TypeScript compiler cache
 *.tsbuildinfo
@@ -49,3 +49,6 @@ src/Old Code/debloatServiceold.ts
 /out
 
 out/controllers/packageController.js
+/out
+/out
+*.map

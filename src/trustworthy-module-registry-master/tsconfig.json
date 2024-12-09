@@ -14,6 +14,7 @@
       "experimentalDecorators": true,        // Enable experimental support for decorators
       "emitDecoratorMetadata": true,         // Emit design-type metadata for decorated declarations
       "removeComments": false                // Do not remove comments - useful for source code documentation purposes
+      
     },
     "include": [
       "src/**/*"                             // Include all files in the src folder
